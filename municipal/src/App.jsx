@@ -1,14 +1,22 @@
-// src/App.jsx
-import React from 'react';
-import AppRoutes from './routes/routes';
+import Header from './components/users/header'; // or correct path
+import Hero from './components/users/hero';
+import JobPositions from './components/users/jobPositions';
+import Footer from './components/users/footer';
 
-const App = () => {
+import Flag from "./assets/SouthAfricaFlag.png";
+
+
+
+function App() {
   return (
-    <>
-      {/* You can include a Header, Footer, ToastContainer, etc. here if needed */}
-      <AppRoutes />
-    </>
+    <div>
+      <Header />
+      <Hero />
+      <JobPositions />
+      <Footer />
+      {/* Other components */}
+    </div>
   );
-};
+}
 
 export default App;
