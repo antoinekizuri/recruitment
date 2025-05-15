@@ -61,7 +61,7 @@ export default function SectionH({ formData, handleChange }) {
         </div>
       )}
       
-      <div className="mt-6 p-4 bg-blue-50 rounded-md">
+      <div className="section-note mt-6">
         <p className="text-sm text-blue-800">
           <span className="font-bold">Important:</span> The City of Polokwane may require you to 
           provide a police clearance certificate as part of the selection process. Any false 

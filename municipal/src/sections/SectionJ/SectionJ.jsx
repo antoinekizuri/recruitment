@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DateInput from "../../components/users/DateInput/DateInput";
-
+import TextInput from "../../components/users/TextInput/TextInput";
 export default function SectionJ({ formData, handleChange }) {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   
@@ -70,7 +70,7 @@ export default function SectionJ({ formData, handleChange }) {
           By submitting this form, you are electronically signing this application.
           Typing your full name below serves as your electronic signature.
         </p>
-        <input
+        <TextInput
           type="text"
           name="electronic_signature"
           value={formData.electronic_signature || ""}
@@ -81,7 +81,7 @@ export default function SectionJ({ formData, handleChange }) {
         />
       </div>
       
-      <div className="mt-6 p-4 bg-blue-50 rounded-md">
+      <div className="section-note mt-6">
         <p className="text-sm text-blue-800">
           <span className="font-bold">Important:</span> Submission of this form constitutes your 
           formal application for employment with the City of Polokwane. The application process is 

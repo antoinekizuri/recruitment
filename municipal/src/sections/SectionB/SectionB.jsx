@@ -1,8 +1,6 @@
 import React from "react";
 import TextInput from "../../components/users/TextInput/TextInput";
 import RadioGroup from "../../components/users/RadioGroup/RadioGroup";
-import Checkbox from "../../components/users/CheckBox/CheckBox";
-import SelectInput from "../../components/users/SelectInput/SelectInput";
 import DateInput from "../../components/users/DateInput/DateInput";
 
 export default function SectionB({ formData, handleChange }) {
@@ -39,12 +37,12 @@ export default function SectionB({ formData, handleChange }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-      <h2 className="text-xl font-bold text-blue-800 mb-6">
+    <div className="section-container">
+      <h2 className="section-title">
         B. PERSONAL DETAILS
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid-two-columns">
         <TextInput
           label="Surname"
           name="surname"
@@ -74,35 +72,39 @@ export default function SectionB({ formData, handleChange }) {
       </div>
       
       <div className="my-6">
-        <h3 className="text-lg font-medium text-gray-700 mb-4">Demographics</h3>
+        <h3 className="subsection-heading">Demographics</h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <RadioGroup
-            label="Race"
-            name="race"
-            value={formData.race}
-            onChange={handleChange}
-            options={raceOptions}
-            inline
-            required
-            tooltip="This information is required for employment equity purposes"
-          />
+        <div className="grid-two-columns">
+          <div className="radio-group-wrapper">
+            <RadioGroup
+              label="Race"
+              name="race"
+              value={formData.race}
+              onChange={handleChange}
+              options={raceOptions}
+              inline
+              required
+              tooltip="This information is required for employment equity purposes"
+            />
+          </div>
           
-          <RadioGroup
-            label="Gender"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            options={genderOptions}
-            inline
-            required
-            tooltip="This information is required for employment equity purposes"
-          />
+          <div className="radio-group-wrapper">
+            <RadioGroup
+              label="Gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              options={genderOptions}
+              inline
+              required
+              tooltip="This information is required for employment equity purposes"
+            />
+          </div>
         </div>
       </div>
       
       <div className="my-6">
-        <div className="mb-4">
+        <div className="radio-group-wrapper mb-4">
           <RadioGroup
             label="Do you have a disability?"
             name="has_disability"
@@ -127,7 +129,7 @@ export default function SectionB({ formData, handleChange }) {
       </div>
       
       <div className="my-6">
-        <div className="mb-4">
+        <div className="radio-group-wrapper mb-4">
           <RadioGroup
             label="Are you a South African citizen?"
             name="is_south_african"
@@ -141,7 +143,7 @@ export default function SectionB({ formData, handleChange }) {
         </div>
         
         {!formData.is_south_african && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid-two-columns">
             <TextInput
               label="If no, what is your nationality?"
               name="nationality"
@@ -163,7 +165,7 @@ export default function SectionB({ formData, handleChange }) {
       </div>
       
       <div className="my-6">
-        <div className="mb-4">
+        <div className="radio-group-wrapper mb-4">
           <RadioGroup
             label="Do you hold a professional membership with any professional body?"
             name="has_professional_membership"
@@ -176,7 +178,7 @@ export default function SectionB({ formData, handleChange }) {
         </div>
         
         {formData.has_professional_membership && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid-three-columns">
             <TextInput
               label="Professional Body"
               name="professional_body"
@@ -207,7 +209,7 @@ export default function SectionB({ formData, handleChange }) {
         )}
       </div>
       
-      <div className="mt-6 p-4 bg-blue-50 rounded-md">
+      <div className="section-note mt-6">
         <p className="text-sm text-blue-800">
           <span className="font-bold">Why this matters:</span> The personal information provided here 
           helps the City of Polokwane comply with employment equity legislation and ensure that your 

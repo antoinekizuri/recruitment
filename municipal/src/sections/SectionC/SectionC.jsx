@@ -1,9 +1,9 @@
 import React from "react";
 import TextInput from "../../components/users/TextInput/TextInput";
 import SelectInput from "../../components/users/SelectInput/SelectInput";
+import "./SectionC.css";
 
 export default function SectionC({ formData, handleChange }) {
-  // Define language options
   const languageOptions = [
     { value: "English", label: "English" },
     { value: "Afrikaans", label: "Afrikaans" },
@@ -19,11 +19,9 @@ export default function SectionC({ formData, handleChange }) {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-      <h2 className="text-xl font-bold text-blue-800 mb-6">
-        C. CONTACT DETAILS
-      </h2>
-      
+    <div className="section-c">
+      <h2 className="section-c-title">C. CONTACT DETAILS</h2>
+
       <div className="mb-6">
         <SelectInput
           label="Preferred Language of Correspondence"
@@ -35,8 +33,8 @@ export default function SectionC({ formData, handleChange }) {
           tooltip="Select the language you prefer for all communications regarding your application"
         />
       </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+      <div className="section-c-grid">
         <TextInput
           label="Cell Phone Number"
           name="cell_phone"
@@ -46,7 +44,7 @@ export default function SectionC({ formData, handleChange }) {
           tooltip="Your primary contact number that you can be reached on"
           type="tel"
         />
-        
+
         <TextInput
           label="Alternative Number"
           name="alternative_number"
@@ -56,7 +54,7 @@ export default function SectionC({ formData, handleChange }) {
           type="tel"
         />
       </div>
-      
+
       <div className="mb-6">
         <TextInput
           label="Email Address"
@@ -68,7 +66,7 @@ export default function SectionC({ formData, handleChange }) {
           type="email"
         />
       </div>
-      
+
       <div className="mb-6">
         <TextInput
           label="Residential Address"
@@ -79,7 +77,7 @@ export default function SectionC({ formData, handleChange }) {
           tooltip="Your current physical address"
         />
       </div>
-      
+
       <div className="mb-6">
         <TextInput
           label="Postal Address (if different)"
@@ -89,9 +87,9 @@ export default function SectionC({ formData, handleChange }) {
           tooltip="Your mailing address, if different from your residential address"
         />
       </div>
-      
-      <div className="mt-6 p-4 bg-blue-50 rounded-md">
-        <p className="text-sm text-blue-800">
+
+      <div className="section-c-note">
+        <p>
           <span className="font-bold">Important:</span> Please ensure your contact details are 
           accurate and up-to-date. The City of Polokwane will use these details to communicate 
           with you regarding your application. If your contact information changes, please notify 

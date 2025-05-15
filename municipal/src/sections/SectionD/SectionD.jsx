@@ -4,18 +4,15 @@ import RadioGroup from "../../components/users/RadioGroup/RadioGroup";
 import DateInput from "../../components/users/DateInput/DateInput";
 
 export default function SectionD({ formData, handleChange }) {
-  // Define options for the PDP radio buttons
   const pdpOptions = [
     { value: "yes", label: "Yes" },
     { value: "no", label: "No" }
   ];
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-      <h2 className="text-xl font-bold text-blue-800 mb-6">
-        D. DRIVER'S LICENCE(S)
-      </h2>
-      
+    <div className="section-container">
+      <h2 className="section-title">D. DRIVER'S LICENCE(S)</h2>
+
       <div className="mb-6">
         <TextInput
           label="License Code(s) (e.g., C1, EB, etc.)"
@@ -25,7 +22,7 @@ export default function SectionD({ formData, handleChange }) {
           tooltip="Enter all driver's license codes you hold, separated by commas"
         />
       </div>
-      
+
       <div className="mb-6">
         <DateInput
           label="Expiry Date of License(s)"
@@ -35,8 +32,8 @@ export default function SectionD({ formData, handleChange }) {
           tooltip="The date your driver's license expires"
         />
       </div>
-      
-      <div className="mb-6">
+
+      <div className="radio-group-wrapper mb-6">
         <RadioGroup
           label="Do you have a Professional Driving Permit (PDP)?"
           name="has_pdp"
@@ -46,7 +43,7 @@ export default function SectionD({ formData, handleChange }) {
           tooltip="Indicate whether you hold a Professional Driving Permit"
         />
       </div>
-      
+
       {formData.has_pdp === "yes" && (
         <div className="mb-6">
           <DateInput
@@ -58,8 +55,8 @@ export default function SectionD({ formData, handleChange }) {
           />
         </div>
       )}
-      
-      <div className="mt-6 p-4 bg-blue-50 rounded-md">
+
+      <div className="section-note">
         <p className="text-sm text-blue-800">
           <span className="font-bold">Note:</span> If the position you are applying for requires specific 
           driving qualifications, please ensure all license information is accurate and up-to-date. 

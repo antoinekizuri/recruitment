@@ -1,5 +1,6 @@
 import React from "react";
 import Tooltip from "../ToolTip/ToolTip";
+import "./RadioGroup.css";
 
 export default function RadioGroup({
   label,
@@ -10,12 +11,16 @@ export default function RadioGroup({
   required = false,
   tooltip = "",
   inline = false,
+  disabled = false,
+  error = "",
   className = ""
 }) {
   const handleRadioChange = (e) => {
+    if (disabled) return;
+    
     onChange({
       target: {
-        name: name,
+        name,
         value: e.target.value,
         type: "radio"
       }
@@ -23,17 +28,22 @@ export default function RadioGroup({
   };
 
   return (
-    <div className={`mb-4 ${className}`}>
-      <div className="flex items-center mb-1">
-        <label className="block text-gray-700 text-sm font-medium">
+    <div className={`radio-group ${error ? 'radio-group-error' : ''} ${className}`}>
+      <div className="radio-label-row">
+        <label className="radio-label">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="required">*</span>}
         </label>
         {tooltip && <Tooltip text={tooltip} />}
       </div>
-      <div className={`${inline ? "flex flex-wrap gap-4" : "space-y-2"}`}>
+
+      <div className={`radio-options ${inline ? "radio-inline" : "radio-stacked"}`}>
         {options.map((option) => (
-          <div key={option.value} className="flex items-center">
+          <label
+            key={option.value}
+            htmlFor={`${name}-${option.value}`}
+            className={`radio-option ${disabled || option.disabled ? 'disabled' : ''}`}
+          >
             <input
               type="radio"
               id={`${name}-${option.value}`}
@@ -41,17 +51,20 @@ export default function RadioGroup({
               value={option.value}
               checked={value === option.value}
               onChange={handleRadioChange}
-              className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+              className="radio-input"
+              disabled={disabled || option.disabled}
+              aria-describedby={error ? `${name}-error` : undefined}
             />
-            <label
-              htmlFor={`${name}-${option.value}`}
-              className="ml-2 text-sm text-gray-700"
-            >
-              {option.label}
-            </label>
-          </div>
+            <span className="radio-text">{option.label}</span>
+          </label>
         ))}
       </div>
+      
+      {error && (
+        <div className="radio-error-message" id={`${name}-error`}>
+          {error}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,92 @@
+.section-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 1.5rem;
+}
+
+.subsection-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.grid-two-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.grid-three-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .grid-two-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-three-columns {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.section-note {
+  background-color: #eff6ff;
+  padding: 1rem;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1e40af;
+  margin-top: 2rem;
+}
+
+.radio-group-wrapper,
+.radio-inline-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio-inline-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.radio-option {
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.radio-label {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.radio-input {
+  accent-color: #2563eb;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
