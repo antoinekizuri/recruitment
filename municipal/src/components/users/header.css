@@ -1,0 +1,86 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  color: #004d40;
+  padding: 1rem 2rem;
+  width: 100vw;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 150px;
+}
+
+.header-left {
+  gap: 1rem;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.municipality-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  white-space: nowrap;
+}
+
+.header-center {
+  flex: 2;
+  text-align: center;
+  min-width: 200px;
+}
+
+.form-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+  word-wrap: break-word;
+}
+
+.flag {
+  height: 40px;
+  width: auto;
+  margin-left: auto;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .header-center {
+    text-align: left;
+    padding-top: 0.5rem;
+  }
+
+  .header-left,
+  .header-right {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .flag {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
