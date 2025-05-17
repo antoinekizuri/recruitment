@@ -1,0 +1,30 @@
+.section-container {
+  background-color: transparent;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 1.5rem;
+}
+
+.radio-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.section-note {
+  background-color: #eff6ff;
+  padding: 1rem;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1e40af;
+  margin-top: 2rem;
+}
