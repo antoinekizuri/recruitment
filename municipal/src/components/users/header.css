@@ -5,14 +5,14 @@
   background-color: #fff;
   color: #004d40;
   padding: 1rem 2rem;
-  width: 100vw;
+  width: 100%; /* FIXED: was 100vw (which ignores scrollbar width) */
   box-sizing: border-box;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  flex-wrap: wrap; /* allows wrapping on small screens */
+  flex-wrap: wrap;
 }
 
 .header-left,

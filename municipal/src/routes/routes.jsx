@@ -10,7 +10,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/apply-normal" element={<ApplyNormal />} />
+      <Route path="/apply-standard" element={<ApplyNormal />} />
       <Route path="/apply-senior" element={<ApplySenior />} />
       <Route path="/success" element={<Success />} />
       <Route path="*" element={<NotFound />} />

@@ -1,6 +1,9 @@
 // src/pages/Home.jsx
 import React, { useEffect } from 'react';
-
+import Header from '../components/users/Header';
+import Hero from '../components/users/Hero';
+import JobPositions from '../components/users/JobPositions';
+import Footer from '../components/users/Footer';
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -44,31 +47,14 @@ const theme = createTheme({
 
 const Home = () => {
   // This useEffect ensures no unwanted margins are affecting the layout
-  useEffect(() => {
-    // Remove any margin or padding on html/body
-    document.documentElement.style.margin = '0';
-    document.documentElement.style.padding = '0';
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-    
-    // Force full height and width
-    document.documentElement.style.height = '100%';
-    document.documentElement.style.width = '100%';
-    document.body.style.height = '100%';
-    document.body.style.width = '100%';
-    
-    // Ensure there's no space at the top
-    document.body.style.paddingTop = '0';
-    document.body.style.marginTop = '0';
-  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <div style={{ position: 'relative' }}>
-
-      </div>
-    </ThemeProvider>
+    <>
+      <Header />
+      <Hero />
+      <JobPositions /> 
+      <Footer />
+    </>
   );
 };
 
