@@ -22,7 +22,7 @@ import { getSectionTitle, getSectionDescription } from '../utils/SeniorFormHelpe
 import { FORM_SECTIONS } from '../constants/formConstants';
 import * as validators from '../utils/seniorValidators';
 
-import './applyNormal.css';
+import './ApplyNormal.css';
 
 const ApplySenior = () => {
   const navigate = useNavigate();
