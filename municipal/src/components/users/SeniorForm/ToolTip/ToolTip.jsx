@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Tooltip.css";
+import "./ToolTip.css";
 
 export default function Tooltip({ text }) {
   const [isVisible, setIsVisible] = useState(false);
