@@ -23,7 +23,7 @@ import { getSectionTitle, getSectionDescription } from '../utils/formHelpers';
 import { FORM_SECTIONS } from '../constants/formConstants';
 import * as validators from '../utils/validators';
 
-import './applyNormal.css';
+import './ApplyNormal.css';
 
 const ApplyNormal = () => {
   const navigate = useNavigate();
