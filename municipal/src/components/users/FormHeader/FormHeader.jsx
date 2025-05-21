@@ -1,6 +1,6 @@
 import React from "react";
 import "./FormHeader.css";
-import logo from "../../../assets/Logo.jpg"; // adjust path as needed
+import logo from "../../../assets/COP-Logo.jpg"; // adjust path as needed
 
 export default function FormHeader() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from "../../assets/Logo.jpg";
+import Logo from "../../assets/COP-Logo.jpg";
 import Flag from "../../assets/SouthAfricaFlag.png"; // Add flag image
 import './header.css';
 
@@ -8,7 +8,6 @@ const Header = () => {
     <header className="header">
       <div className="header-left">
         <img src={Logo} alt="Polokwane Municipality Logo" className="logo" />
-        <h1 className="municipality-name">Polokwane Municipality</h1>
       </div>
       
       <div className="header-center">

@@ -27,8 +27,9 @@
   gap: 1rem;
 }
 
+/* Increased logo size */
 .logo {
-  height: 50px;
+  height: 70px; /* Increased from 50px to 70px */
   width: auto;
 }
 
@@ -90,8 +91,11 @@
     display: none; /* Hide both the right section and the flag explicitly */
   }
 
+  /* Increased mobile logo size */
   .logo {
-    height: 40px;
+    height: 80px; /* Increased for mobile view */
+    max-width: none; /* Remove max-width constraint */
+    width: auto;
   }
   
   .municipality-name {
