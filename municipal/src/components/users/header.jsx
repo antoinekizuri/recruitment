@@ -12,7 +12,7 @@ const Header = () => {
       </div>
       
       <div className="header-center">
-        <p className="form-title">Application for Employment Z83 (81/971431)</p>
+        <p className="form-title">Application for Employment</p>
       </div>
 
       <div className="header-right">
