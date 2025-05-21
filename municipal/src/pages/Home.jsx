@@ -1,9 +1,9 @@
 // src/pages/Home.jsx
 import React, { useEffect } from 'react';
-import Header from '../components/users/Header';
-import Hero from '../components/users/Hero';
-import JobPositions from '../components/users/JobPositions';
-import Footer from '../components/users/Footer';
+import Header from '../components/users/header';
+import Hero from '../components/users/hero';
+import JobPositions from '../components/users/jobPositions';
+import Footer from '../components/users/footer';
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
