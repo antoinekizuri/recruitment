@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import DateInput from "../../components/users/DateInput/DateInput";
 import TextInput from "../../components/users/TextInput/TextInput";
+
 export default function SectionJ({ formData, handleChange }) {
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(formData.declaration_accepted || false);
   
   const handleAgreementChange = (e) => {
     setAgreedToTerms(e.target.checked);
     handleChange({
       target: {
-        name: "declaration_agreed",
+        name: "declaration_accepted",  // Changed from "declaration_agreed"
         value: e.target.checked
       }
     });
@@ -34,7 +35,7 @@ export default function SectionJ({ formData, handleChange }) {
           <div className="flex items-center h-5">
             <input
               id="declaration_agreement"
-              name="declaration_agreed"
+              name="declaration_accepted"  // Changed from "declaration_agreed"
               type="checkbox"
               checked={agreedToTerms}
               onChange={handleAgreementChange}

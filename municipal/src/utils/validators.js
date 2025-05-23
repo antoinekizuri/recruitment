@@ -144,10 +144,43 @@ export const validateSectionD = (sectionData) => {
  * @returns {Object} - Validation result
  */
 export const validateSectionE = (sectionData) => {
-  const requiredFields = ['highest_school_grade', 'school_name', 'school_year_completed'];
-  return validateSection(sectionData, requiredFields);
+  const errors = {};
+  
+  // Check if user has provided any qualification information
+  const hasSchoolInfo = sectionData.highest_school_grade;
+  const hasTertiaryInfo = sectionData.qualifications && 
+                         sectionData.qualifications.length > 0 && 
+                         sectionData.qualifications.some(q => 
+                           q.qualification?.trim() || q.institution?.trim()
+                         );
+  
+  // Require at least some qualification information
+  if (!hasSchoolInfo && !hasTertiaryInfo) {
+    errors.qualifications = 'Please provide at least your highest school grade or add a tertiary qualification';
+  }
+  
+  // If school grade is provided, require school name
+  if (sectionData.highest_school_grade && !sectionData.school_name?.trim()) {
+    errors.school_name = 'School name is required when school grade is selected';
+  }
+  
+  // Validate each qualification in the array
+  if (sectionData.qualifications && sectionData.qualifications.length > 0) {
+    sectionData.qualifications.forEach((qual, index) => {
+      if (qual.qualification?.trim() && !qual.institution?.trim()) {
+        errors[`qualification_${index}_institution`] = `Institution name is required for qualification ${index + 1}`;
+      }
+      if (qual.institution?.trim() && !qual.qualification?.trim()) {
+        errors[`qualification_${index}_name`] = `Qualification name is required for qualification ${index + 1}`;
+      }
+    });
+  }
+  
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors
+  };
 };
-
 /**
  * Validates Section F (Work Experience)
  * @param {Object} sectionData - Section data
@@ -313,8 +346,8 @@ export const validateSectionJ = (sectionData) => {
   const errors = {};
   
   // Declaration agreement is required
-  if (!sectionData.declaration_agreed) {
-    errors.declaration_agreed = 'You must agree to the declaration';
+  if (!sectionData.declaration_accepted) {  // Changed from declaration_agreed
+    errors.declaration_accepted = 'You must agree to the declaration';
   }
   
   // Declaration date is required

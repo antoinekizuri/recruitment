@@ -133,12 +133,15 @@ const ApplySenior = () => {
       setIsSubmitting(true);
 
       try {
-        const response = await fetch('/api/submit-application', {
+        const response = await fetch('https://localhost:8000/server.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            formType: 'senior_management',
+            formData: formData
+          })
         });
 
         if (response.ok) {
