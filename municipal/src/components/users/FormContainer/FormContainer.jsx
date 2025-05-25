@@ -127,84 +127,107 @@ export default function FormContainer() {
     }, []);
 
     // Transform FormContainer data structure to match Server expected format
-    const transformFormDataForServer = (formData) => {
-        return {
-            sectionA: {
-                position_title: formData.advertised_post,
-                reference_number: formData.reference_number,
-                notice_service_period: formData.notice_service_period,
-            },
-            sectionB: {
-                surname: formData.surname,
-                first_names: formData.first_names,
-                id_number: formData.id_number,
-                race: formData.race,
-                gender: formData.gender,
-                disability: formData.has_disability ? 'Yes' : 'No',
-                disability_details: formData.disability_details,
-                is_south_african: formData.is_south_african ? 'Yes' : 'No',
-                nationality: formData.nationality,
-                work_permit_number: formData.work_permit_number,
-                has_professional_membership: formData.has_professional_membership ? 'Yes' : 'No',
-                professional_body: formData.professional_body,
-                membership_number: formData.membership_number,
-                expiry_date: formData.expiry_date,
-            },
-            sectionC: {
-                preferred_language: formData.preferred_language,
-                cell_phone: formData.cell_phone,
-                alternative_number: formData.alternative_number,
-                email: formData.email,
-                residential_address: formData.residential_address,
-                postal_address: formData.postal_address,
-            },
-            sectionD: {
-                license_codes: formData.license_codes,
-                license_expiry_date: formData.license_expiry_date,
-                has_pdp: formData.has_pdp ? 'Yes' : 'No',
-                pdp_expiry_date: formData.pdp_expiry_date,
-            },
-            sectionE: {
-                highest_school_grade: formData.highest_school_grade,        // UPDATED
-                school_name: formData.school_name,
-                school_year_completed: formData.school_year_completed,      // UPDATED
-                tertiary_qualifications: JSON.stringify(formData.qualifications || [])  // UPDATED
-            },
-            sectionF: {
-                is_currently_employed: formData.is_currently_employed ? 'Yes' : 'No',
-                current_employer_name: formData.current_employer,
-                employment_period: formData.employment_period,
-                current_city_employee: formData.current_city_employee ? 'Yes' : 'No',
-                current_designation: formData.designation,
-                pay_number: formData.pay_number,
-                previous_employment: JSON.stringify(formData.previous_employers || []),
-                previous_local_govt_condition: formData.previous_local_govt_condition ? 'Yes' : 'No',
-                previous_municipality: formData.previous_municipality,
-            },
-            sectionG: {
-                dismissed_for_misconduct: formData.dismissed_for_misconduct ? 'Yes' : 'No',
-                misconduct_institution: formData.misconduct_municipality,
-                misconduct_type: formData.misconduct_type,
-                misconduct_date: formData.misconduct_date,
-                misconduct_sanction: formData.misconduct_sanction,
-                resigned_pending_disciplinary: formData.resigned_pending_disciplinary ? 'Yes' : 'No',
-            },
-            sectionH: {
-                has_criminal_record: formData.has_criminal_record ? 'Yes' : 'No',
-                criminal_act_type: formData.criminal_act_type,
-                criminal_case_date: formData.criminal_case_date,
-                criminal_case_outcome: formData.criminal_outcome,
-            },
-            sectionI: {
-                references: JSON.stringify(formData.references || [])
-            },
-            sectionJ: {
-                declaration_agreed: formData.declaration_accepted,
-                declaration_date: new Date().toISOString().split('T')[0],
-                electronic_signature: `${formData.first_names} ${formData.surname}`
-            }
-        };
+const transformFormDataForServer = (formData) => {
+    return {
+        sectionA: {
+            position_title: formData.advertised_post,
+            reference_number: formData.reference_number,
+            directorate: formData.directorate,
+            department: formData.department,
+            division: formData.division,
+            notice_service_period: formData.notice_service_period,
+            municipality_entity: formData.municipality_entity,
+        },
+        sectionB: {
+            surname: formData.surname,
+            first_names: formData.first_names,
+            id_number: formData.id_number,
+            race: formData.race,
+            gender: formData.gender,
+            is_disabled: formData.has_disability ? 'Yes' : 'No', // Fixed field name
+            disability_details: formData.disability_details,
+            is_south_african: formData.is_south_african ? 'Yes' : 'No',
+            nationality: formData.nationality,
+            work_permit_number: formData.work_permit_number,
+            has_professional_membership: formData.has_professional_membership ? 'Yes' : 'No',
+            professional_body: formData.professional_body,
+            membership_number: formData.membership_number,
+            membership_expiry_date: formData.expiry_date, // Fixed field name
+        },
+        sectionC: {
+            preferred_language: formData.preferred_language,
+            cell_phone: formData.cell_phone,
+            alternative_number: formData.alternative_number,
+            email: formData.email,
+            residential_address: formData.residential_address,
+            postal_address: formData.postal_address,
+            postal_code: formData.postal_code, // Added missing field
+        },
+        sectionD: {
+            license_codes: formData.license_codes,
+            license_expiry_date: formData.license_expiry_date,
+            has_pdp: formData.has_pdp ? 'Yes' : 'No',
+            pdp_expiry_date: formData.pdp_expiry_date,
+        },
+        sectionE: {
+            highest_school_grade: formData.highest_school_grade,
+            school_name: formData.school_name,
+            school_year_completed: formData.school_year_completed,
+            // Handle multiple tertiary qualifications - concatenate with semicolons
+            highest_tertiary_qualification: formData.qualifications?.map(q => q.qualification).filter(Boolean).join('; ') || '',
+            tertiary_institution: formData.qualifications?.map(q => q.institution).filter(Boolean).join('; ') || '',
+            nqf_level: formData.qualifications?.map(q => q.nqf_level).filter(Boolean).join('; ') || '',
+            tertiary_qualification_year: formData.qualifications?.map(q => q.year).filter(Boolean).join('; ') || '',
+            // Added current study fields
+            current_study_institution: formData.current_study_institution || '',
+            current_study_qualification: formData.current_study_qualification || '',
+        },
+        sectionF: {
+            is_currently_employed: formData.is_currently_employed ? 'Yes' : 'No',
+            current_employer: formData.current_employer, // Fixed field name
+            current_employer_address: formData.current_employer_address || '', // Added missing field
+            employment_period: formData.employment_period,
+            current_designation: formData.designation,
+            current_pay_number: formData.pay_number, // Fixed field name
+            reasons_for_leaving: formData.reasons_for_leaving || '', // Added missing field
+            // Handle multiple previous employers - concatenate with semicolons
+            previous_employer_1: formData.previous_employers?.map(emp => emp.employer).filter(Boolean).join('; ') || '',
+            position_1: formData.previous_employers?.map(emp => emp.position).filter(Boolean).join('; ') || '',
+            start_date: formData.previous_employers?.map(emp => emp.start_date).filter(Boolean).join('; ') || '',
+            end_date: formData.previous_employers?.map(emp => emp.end_date).filter(Boolean).join('; ') || '',
+            reason_to_leave: formData.previous_employers?.map(emp => emp.reason_to_leave).filter(Boolean).join('; ') || '',
+            has_reemployment_restriction: formData.previous_local_govt_condition ? 'Yes' : 'No',
+            previous_municipality: formData.previous_municipality,
+        },
+        sectionG: {
+            dismissed_for_misconduct: formData.dismissed_for_misconduct ? 'Yes' : 'No',
+            misconduct_institution: formData.misconduct_municipality,
+            misconduct_type: formData.misconduct_type,
+            misconduct_date: formData.misconduct_date,
+            misconduct_sanction: formData.misconduct_sanction,
+            resigned_pending_disciplinary: formData.resigned_pending_disciplinary ? 'Yes' : 'No',
+        },
+        sectionH: {
+            has_criminal_record: formData.has_criminal_record ? 'Yes' : 'No',
+            criminal_act_type: formData.criminal_act_type,
+            criminal_case_date: formData.criminal_case_date,
+            criminal_case_outcome: formData.criminal_outcome,
+        },
+        sectionI: {
+            // Handle multiple references - concatenate with semicolons
+            referee_name: formData.references?.map(ref => ref.name).filter(Boolean).join('; ') || '',
+            referee_relationship: formData.references?.map(ref => ref.relationship).filter(Boolean).join('; ') || '',
+            referee_office_phone: formData.references?.map(ref => ref.office_phone).filter(Boolean).join('; ') || '',
+            referee_cell_phone: formData.references?.map(ref => ref.cell_phone).filter(Boolean).join('; ') || '',
+            referee_email: formData.references?.map(ref => ref.email).filter(Boolean).join('; ') || '',
+        },
+        sectionJ: {
+            declaration_agreed: formData.declaration_accepted ? 'Yes' : 'No',
+            declaration_date: new Date().toISOString().split('T')[0],
+            electronic_signature: `${formData.first_names} ${formData.surname}`
+        }
     };
+};
 
     // Comprehensive form validation
     const validateCurrentSection = () => {
@@ -390,6 +413,7 @@ export default function FormContainer() {
             const transformedData = transformFormDataForServer(formData);
 
             console.log('Submitting form data:', transformedData);
+            console.log('Submitting form data:', JSON.stringify(transformedData));
 
             const response = await fetch('https://erecruitment-backend-aghxfgbqayf0atcr.southafricanorth-01.azurewebsites.net/server.php', {
                 method: 'POST',
@@ -424,6 +448,8 @@ export default function FormContainer() {
                 }
             } else {
                 // Handle server-side validation errors
+                console.log('Server Error:', JSON.stringify(result.errors));
+
                 if (result.errors && Array.isArray(result.errors)) {
                     alert('Please fix the following errors:\n' + result.errors.join('\n'));
                 } else if (result.error) {

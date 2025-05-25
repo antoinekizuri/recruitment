@@ -61,6 +61,7 @@ export const createInitialFormState = () => {
       department: '',
       division: '',
       reference_number: '',
+      notice_service_period: '',
       advertisements: [] // If applicable
     },
     
@@ -73,7 +74,14 @@ export const createInitialFormState = () => {
       gender: '',
       disability: 'no',
       disability_details: '',
-      disability_document: null
+      disability_document: null,
+      is_south_african: 'yes',
+      nationality: '',
+      work_permit_number: '',
+      has_professional_membership: 'no',
+      membership_number: '',
+      MembershipExpiryDate: '',
+      professional_body: '',
     },
     
     // Section C (Contact Details)
@@ -110,18 +118,18 @@ export const createInitialFormState = () => {
     },
     
     // Section F (Work Experience)
-    sectionF: {
-      is_currently_employed: 'no',
-      current_employer_name: '',
-      current_employer_address: '',
-      current_employment_period: '',
-      current_designation: '',
-      pay_number: '',
-      reasons_for_leaving: '',
-      has_reemployment_restriction: 'no',
-      previous_municipality_name: '',
-      previous_employment: []
-    },
+sectionF: {
+  is_currently_employed: 'no',
+  current_employer_name: '',
+  current_employer_address: '',
+  current_employment_period: '',
+  current_designation: '',
+  pay_number: '',
+  reasons_for_leaving: '',
+  has_reemployment_restriction: 'no',
+  previous_municipality_name: '',
+  previous_employers: [] // Changed from previous_employment
+},
     
     // Section G (Disciplinary Record)
     sectionG: {
@@ -143,13 +151,13 @@ export const createInitialFormState = () => {
     },
     
     // Section I (References)
-    sectionI: {
-      references: [
-        { name: '', relationship: '', telephone: '', email: '' },
-        { name: '', relationship: '', telephone: '', email: '' },
-        { name: '', relationship: '', telephone: '', email: '' }
-      ]
-    },
+sectionI: {
+  references: [
+    { name: '', relationship: '', telephone: '', cell_phone: '', email: '' },
+    { name: '', relationship: '', telephone: '', cell_phone: '', email: '' },
+    { name: '', relationship: '', telephone: '', cell_phone: '', email: '' }
+  ]
+},
     
     // Section J (Declaration)
     sectionJ: {
