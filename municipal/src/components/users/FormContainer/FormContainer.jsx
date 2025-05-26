@@ -147,7 +147,7 @@ const transformFormDataForServer = (formData) => {
             id_number: formData.id_number,
             race: formData.race,
             gender: formData.gender,
-            is_disabled: formData.has_disability ? 'Yes' : 'No', // Fixed field name
+            has_disability: formData.has_disability ? 'Yes' : 'No', // Fixed field name
             disability_details: formData.disability_details,
             is_south_african: formData.is_south_african ? 'Yes' : 'No',
             nationality: formData.nationality,
@@ -155,7 +155,7 @@ const transformFormDataForServer = (formData) => {
             has_professional_membership: formData.has_professional_membership ? 'Yes' : 'No',
             professional_body: formData.professional_body,
             membership_number: formData.membership_number,
-            membership_expiry_date: formData.expiry_date, // Fixed field name
+            expiry_date: formData.expiry_date, // Fixed field name
         },
         sectionC: {
             preferred_language: formData.preferred_language,
