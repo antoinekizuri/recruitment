@@ -1,5 +1,6 @@
 import React from "react";
 import TextInput from "../../components/users/TextInput/TextInput";
+import SelectInput from "../../components/users/SelectInput/SelectInput";
 import "./SectionA.css";
 
 export default function SectionA({ formData, handleChange }) {
@@ -18,11 +19,13 @@ export default function SectionA({ formData, handleChange }) {
       <div className="section-fields">
         <TextInput
           label="Advertised Post Being Applied For"
-          name="advertised_post"
+          name="position_title"
           value={formData.position_title}
           onChange={handleChange}
           required
           tooltip="Enter the exact job title as it appears in the advertisement"
+          placeholder="e.g. Administrative Clerk"
+
         />
 
         <TextInput
@@ -32,15 +35,33 @@ export default function SectionA({ formData, handleChange }) {
           onChange={handleChange}
           required
           tooltip="Enter the reference number for this position as mentioned in the job advertisement"
+          placeholder="e.g. Ref No: DOH-01/2025"
         />
-
-        <TextInput
+        <SelectInput
           label="Notice Service Period"
           name="notice_service_period"
           value={formData.notice_service_period}
           onChange={handleChange}
+          options={[
+            { label: "Immediately", value: "immediately" },
+            { label: "7 Days", value: "7_days" },
+            { label: "14 Days", value: "14_days" },
+            { label: "1 Month", value: "1_month" },
+            { label: "2 Months", value: "2_months" },
+            { label: "3 Months", value: "3_months" },
+          ]}
           tooltip="If currently employed, state the notice period required before you can start"
         />
+
+        <TextInput
+          label="Department"
+          name="department"
+          value={formData.department}
+          onChange={handleChange}
+          tooltip="Enter the department you're applying to or currently belong to"
+          placeholder="e.g. Human Resources, Finance, etc."
+        />
+
       </div>
 
       <div className="section-tip">

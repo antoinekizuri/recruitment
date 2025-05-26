@@ -2,7 +2,7 @@ import React from "react";
 import TextInput from "../../../components/users/TextInput/TextInput";
 import RadioGroup from "../../../components/users/RadioGroup/RadioGroup";
 import DateInput from "../../../components/users/DateInput/DateInput";
-
+import SelectInput from "../../../components/users/SelectInput/SelectInput";
 export default function SectionBSenior({ formData, handleChange }) {
   const yesNoOptions = [
     { value: "true", label: "Yes" },
@@ -99,13 +99,28 @@ export default function SectionBSenior({ formData, handleChange }) {
 
         {!formData.is_south_african && (
           <div className="grid-two-columns mt-4">
-            <TextInput
+            <SelectInput
               label="If No, what is your nationality?"
               name="nationality"
               value={formData.nationality}
               onChange={handleChange}
               required
+              options={[
+                { label: "South Africa", value: "South Africa" },
+                { label: "Nigeria", value: "Nigeria" },
+                { label: "Kenya", value: "Kenya" },
+                { label: "Ghana", value: "Ghana" },
+                { label: "United States", value: "United States" },
+                { label: "United Kingdom", value: "United Kingdom" },
+                { label: "India", value: "India" },
+                { label: "China", value: "China" },
+                { label: "Zimbabwe", value: "Zimbabwe" },
+                { label: "Namibia", value: "Namibia" },
+                // You can expand this list or load dynamically
+              ]}
+              tooltip="Select your nationality if you're not a South African citizen"
             />
+
             <TextInput
               label="Work Permit Number (if applicable)"
               name="work_permit_number"

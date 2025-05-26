@@ -27,7 +27,8 @@ export default function SectionASenior({ formData, handleChange }) {
 
         <TextInput
           label="Advertised Post Being Applied For"
-          name="advertised_post"
+          name="position_title"
+          placeholder="e.g. Senior Manager: Human Resources"
           value={formData.position_title}
           onChange={handleChange}
           required
