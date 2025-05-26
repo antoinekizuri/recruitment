@@ -187,7 +187,7 @@ const transformFormDataForServer = (formData) => {
         },
         sectionF: {
             is_currently_employed: formData.is_currently_employed ? 'Yes' : 'No',
-            current_employer: formData.current_employer, // Fixed field name
+            current_employer: formData.current_employer_name, // Fixed field name
             current_employer_address: formData.current_employer_address || '', // Added missing field
             employment_period: formData.employment_period,
             current_designation: formData.designation,
@@ -214,7 +214,7 @@ const transformFormDataForServer = (formData) => {
             has_criminal_record: formData.has_criminal_record ? 'Yes' : 'No',
             criminal_act_type: formData.criminal_act_type,
             criminal_case_date: formData.criminal_case_date,
-            criminal_case_outcome: formData.criminal_outcome,
+            criminal_case_outcome: formData.criminal_case_outcome,
         },
         sectionI: {
             // Handle multiple references - concatenate with semicolons

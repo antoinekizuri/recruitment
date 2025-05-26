@@ -81,7 +81,7 @@ export const createInitialFormState = () => {
       work_permit_number: '',
       has_professional_membership: 'no',
       membership_number: '',
-      MembershipExpiryDate: '',
+      expiry_date: '',
       professional_body: '',
     },
     
