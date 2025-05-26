@@ -19,7 +19,7 @@ export default function SectionA({ formData, handleChange }) {
         <TextInput
           label="Advertised Post Being Applied For"
           name="advertised_post"
-          value={formData.advertised_post}
+          value={formData.position_title}
           onChange={handleChange}
           required
           tooltip="Enter the exact job title as it appears in the advertisement"

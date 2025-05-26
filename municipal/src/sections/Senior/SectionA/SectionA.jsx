@@ -28,7 +28,7 @@ export default function SectionASenior({ formData, handleChange }) {
         <TextInput
           label="Advertised Post Being Applied For"
           name="advertised_post"
-          value={formData.advertised_post}
+          value={formData.position_title}
           onChange={handleChange}
           required
           tooltip="Enter the job title exactly as advertised"

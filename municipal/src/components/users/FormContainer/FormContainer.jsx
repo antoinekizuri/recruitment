@@ -23,10 +23,13 @@ export default function FormContainer() {
     const [formErrors, setFormErrors] = useState({});
     const [formData, setFormData] = useState({
         // Section A - Details of Advertised Post
-        advertised_post: "",
+        position_title: "",
         reference_number: "",
         notice_service_period: "",
-
+        municipality_entity: "",
+        directorate: "",
+        department: "",
+        division: "",
         // Section B - Personal Details
         surname: "",
         first_names: "",
@@ -130,7 +133,7 @@ export default function FormContainer() {
 const transformFormDataForServer = (formData) => {
     return {
         sectionA: {
-            position_title: formData.advertised_post,
+            position_title: formData.position_title,
             reference_number: formData.reference_number,
             directorate: formData.directorate,
             department: formData.department,
@@ -236,7 +239,7 @@ const transformFormDataForServer = (formData) => {
 
         switch (currentSectionId) {
             case 'section-a':
-                if (!formData.advertised_post.trim()) errors.advertised_post = 'Advertised post is required';
+                if (!formData.position_title.trim()) errors.position_title = 'Advertised post is required';
                 if (!formData.reference_number.trim()) errors.reference_number = 'Reference number is required';
                 break;
 
@@ -469,7 +472,7 @@ const transformFormDataForServer = (formData) => {
 
     const resetForm = () => {
         setFormData({
-            advertised_post: "",
+            position_title: "",
             reference_number: "",
             notice_service_period: "",
             surname: "",
@@ -599,7 +602,7 @@ const transformFormDataForServer = (formData) => {
 
                             <div className="application-summary">
                                 <h3>Application Summary:</h3>
-                                <p><strong>Position:</strong> {formData.advertised_post}</p>
+                                <p><strong>Position:</strong> {formData.position_title}</p>
                                 <p><strong>Reference:</strong> {formData.reference_number}</p>
                                 <p><strong>Applicant:</strong> {formData.first_names} {formData.surname}</p>
                                 <p><strong>Email:</strong> {formData.email}</p>

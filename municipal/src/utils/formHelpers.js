@@ -62,6 +62,7 @@ export const createInitialFormState = () => {
       division: '',
       reference_number: '',
       notice_service_period: '',
+      municipality_entity: '',
       advertisements: [] // If applicable
     },
     
@@ -72,7 +73,7 @@ export const createInitialFormState = () => {
       id_number: '',
       race: '',
       gender: '',
-      disability: 'no',
+      has_disability: 'no',
       disability_details: '',
       disability_document: null,
       is_south_african: 'yes',

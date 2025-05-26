@@ -17,7 +17,7 @@ export default function FormContainer() {
     const [currentSection, setCurrentSection] = useState(0);
     const [formData, setFormData] = useState({
         // Section A - Details of Advertised Post
-        advertised_post: "",
+        position_title: "",
         reference_number: "",
         notice_service_period: "",
         municipality_entity: "",
