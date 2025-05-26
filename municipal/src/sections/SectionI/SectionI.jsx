@@ -85,7 +85,7 @@ export default function SectionI({ formData, handleChange }) {
                         <TextInput
                             label="Telephone Number (Office Hours)"
                             type="tel"
-                            value={ref.telephone}
+                            value={ref.office_phone}
                             onChange={(e) => handleReferenceChange(index, "telephone", e.target.value)}
                             required={index < 3}
                             tooltip="Work contact number of your reference"

@@ -204,7 +204,7 @@ const transformFormDataForServer = (formData) => {
         },
         sectionG: {
             dismissed_for_misconduct: formData.dismissed_for_misconduct ? 'Yes' : 'No',
-            misconduct_institution: formData.misconduct_municipality,
+            misconduct_institution: formData.misconduct_institution,
             misconduct_type: formData.misconduct_type,
             misconduct_date: formData.misconduct_date,
             misconduct_sanction: formData.misconduct_sanction,
