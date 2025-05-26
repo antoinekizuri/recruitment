@@ -194,13 +194,13 @@ const transformFormDataForServer = (formData) => {
             current_pay_number: formData.pay_number, // Fixed field name
             reasons_for_leaving: formData.reasons_for_leaving || '', // Added missing field
             // Handle multiple previous employers - concatenate with semicolons
-            previous_employer_1: formData.previous_employers?.map(emp => emp.employer).filter(Boolean).join('; ') || '',
+            previous_employer_1: formData.previous_employers?.map(emp => emp.employer_name).filter(Boolean).join('; ') || '',
             position_1: formData.previous_employers?.map(emp => emp.position).filter(Boolean).join('; ') || '',
             start_date: formData.previous_employers?.map(emp => emp.start_date).filter(Boolean).join('; ') || '',
             end_date: formData.previous_employers?.map(emp => emp.end_date).filter(Boolean).join('; ') || '',
-            reason_to_leave: formData.previous_employers?.map(emp => emp.reason_to_leave).filter(Boolean).join('; ') || '',
+            reason_to_leave: formData.previous_employers?.map(emp => emp.reason_for_leaving).filter(Boolean).join('; ') || '',
             has_reemployment_restriction: formData.previous_local_govt_condition ? 'Yes' : 'No',
-            previous_municipality: formData.previous_municipality,
+            previous_municipality: formData.previous_municipality_name,
         },
         sectionG: {
             dismissed_for_misconduct: formData.dismissed_for_misconduct ? 'Yes' : 'No',

@@ -88,8 +88,8 @@ export default function SectionF({ formData, handleChange }) {
           />
           <TextInput
             label="Period of Employment"
-            name="current_employment_period"
-            value={formData.current_employment_period}
+            name="employment_period"
+            value={formData.employment_period}
             onChange={handleChange}
             placeholder="e.g., 2 years 3 months"
             required
