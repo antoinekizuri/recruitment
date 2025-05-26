@@ -180,7 +180,7 @@ const transformFormDataForServer = (formData) => {
             highest_tertiary_qualification: formData.qualifications?.map(q => q.qualification).filter(Boolean).join('; ') || '',
             tertiary_institution: formData.qualifications?.map(q => q.institution).filter(Boolean).join('; ') || '',
             nqf_level: formData.qualifications?.map(q => q.nqf_level).filter(Boolean).join('; ') || '',
-            tertiary_qualification_year: formData.qualifications?.map(q => q.year).filter(Boolean).join('; ') || '',
+            tertiary_qualification_year: formData.qualifications?.map(q => q.year_obtained).filter(Boolean).join('; ') || '',
             // Added current study fields
             current_study_institution: formData.current_study_institution || '',
             current_study_qualification: formData.current_study_qualification || '',
