@@ -195,8 +195,8 @@ export const validateSectionF = (sectionData) => {
       errors.current_employer_name = 'Please provide your current employer name';
     }
     
-    if (!isNotEmpty(sectionData.current_employment_period)) {
-      errors.current_employment_period = 'Please provide your current employment period';
+    if (!isNotEmpty(sectionData.employment_period)) {
+      errors.employment_period = 'Please provide your current employment period';
     }
     
     // If current employer is City of Polokwane, designation and pay number are required
