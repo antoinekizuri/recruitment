@@ -192,7 +192,7 @@ const transformFormDataForServer = (formData) => {
             employment_period: formData.employment_period,
             current_designation: formData.designation,
             current_pay_number: formData.pay_number, // Fixed field name
-            reasons_for_leaving: formData.reasons_for_leaving || '', // Added missing field
+            reasons_for_leaving: formData.reason_for_leaving || '', // Added missing field
             // Handle multiple previous employers - concatenate with semicolons
             previous_employer_1: formData.previous_employers?.map(emp => emp.employer_name).filter(Boolean).join('; ') || '',
             position_1: formData.previous_employers?.map(emp => emp.position).filter(Boolean).join('; ') || '',

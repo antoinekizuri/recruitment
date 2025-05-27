@@ -123,10 +123,10 @@ sectionF: {
   is_currently_employed: 'no',
   current_employer_name: '',
   current_employer_address: '',
-  current_employment_period: '',
+  employment_period: '',
   current_designation: '',
   pay_number: '',
-  reasons_for_leaving: '',
+  reason_for_leaving: '',
   has_reemployment_restriction: 'no',
   previous_municipality_name: '',
   previous_employers: [] // Changed from previous_employment
