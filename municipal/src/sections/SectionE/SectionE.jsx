@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextInput from "../../components/users/TextInput/TextInput";
 import SelectInput from "../../components/users/SelectInput/SelectInput";
 import "./SectionE.css";
+
 export default function SectionE({ formData, handleChange }) {
     const [showAddQualification, setShowAddQualification] = useState(false);
 
@@ -146,25 +147,6 @@ export default function SectionE({ formData, handleChange }) {
                                     tooltip="Year the qualification was obtained"
                                 />
                             </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Upload Qualification Document (optional)
-                                </label>
-                                <input
-                                    type="file"
-                                    accept=".pdf,.jpg,.jpeg,.png"
-                                    onChange={(e) =>
-                                        handleQualificationChange(index, "file", e.target.files[0])
-                                    }
-                                    className="file-input"
-                                />
-                                {q.file && (
-                                    <p className="text-sm text-gray-600 mt-1 truncate">
-                                        Selected File: <strong>{q.file.name}</strong>
-                                    </p>
-                                )}
-                            </div>
                         </div>
                     </div>
                 ))}
@@ -201,9 +183,9 @@ export default function SectionE({ formData, handleChange }) {
 
             <div className="section-note">
                 <p className="text-sm text-blue-800">
-                    <span className="font-bold">Note:</span> You may be required to provide certified copies
-                    of all qualifications listed. The City of Polokwane reserves the right to verify all
-                    qualifications with the relevant institutions.
+                    <span className="font-bold">Note:</span> You will be required to upload certified copies
+                    of all qualifications in Section I (Supporting Documents). The City of Polokwane reserves 
+                    the right to verify all qualifications with the relevant institutions.
                 </p>
             </div>
         </div>

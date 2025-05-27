@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Briefcase, MapPin, Calendar, Clock, Loader2, AlertCircle } from "lucide-react";
 import "./jobPositions.css";
+import { useNavigate } from "react-router-dom";
 
 // Fallback static data in case API fails
 const fallbackJobsData = [
@@ -41,33 +42,34 @@ const JobPositions = () => {
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   // Helper function to clean HTML from SharePoint rich text fields
   const cleanHtmlContent = (htmlString) => {
     if (!htmlString) return '';
-    
+
     // Create a temporary div to parse HTML
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlString;
-    
+
     // Extract plain text and clean up
     let text = tempDiv.textContent || tempDiv.innerText || '';
-    
+
     // Remove extra whitespace and line breaks
     text = text.replace(/\s+/g, ' ').trim();
-    
+
     return text;
   };
 
   // Helper function to format closing date
   const formatClosingDate = (dateString) => {
     if (!dateString) return '';
-    
+
     const date = new Date(dateString);
     const now = new Date();
     const diffTime = date.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays < 0) {
       return 'Closed';
     } else if (diffDays === 0) {
@@ -90,7 +92,7 @@ const JobPositions = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('https://erecruitment-backend-aghxfgbqayf0atcr.southafricanorth-01.azurewebsites.net/vacancy_api.php', {
         method: 'GET',
         headers: {
@@ -103,7 +105,7 @@ const JobPositions = () => {
       }
 
       const result = await response.json();
-      
+
       if (result.success) {
         // Clean up the data before setting it
         const cleanedData = result.data.map(job => ({
@@ -186,9 +188,8 @@ const JobPositions = () => {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`filter-btn ${
-                  activeFilter === filter ? "filter-active" : ""
-                }`}
+                className={`filter-btn ${activeFilter === filter ? "filter-active" : ""
+                  }`}
               >
                 {filter}
               </button>
@@ -241,9 +242,11 @@ const JobPositions = () => {
 
                 <div className="job-actions">
                   <span className="badge-type">{job.type}</span>
-                  <button 
+                  <button
                     className="btn-green"
-                    onClick={() => window.location.href = `/apply/${job.id}`}
+                    // onClick={() => window.location.href = `/apply/${job.id}`}
+                    onClick={() => navigate("/apply-senior")}
+
                   >
                     Apply Now
                   </button>
