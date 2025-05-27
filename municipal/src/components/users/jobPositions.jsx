@@ -34,13 +34,34 @@ const fallbackJobsData = [
 ];
 
 const filters = ["All Jobs", "Full-Time", "Part-Time", "Contract"];
-
 const JobPositions = () => {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("All Jobs");
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Helper function to format closing date
+  const formatClosingDate = (dateString) => {
+    if (!dateString) return '';
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = date.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) {
+      return 'Closed';
+    } else if (diffDays === 0) {
+      return 'Today';
+    } else if (diffDays === 1) {
+      return 'Tomorrow';
+    } else if (diffDays <= 7) {
+      return `${diffDays} days`;
+    } else {
+      return date.toLocaleDateString();
+    }
+  };
 
   // Fetch jobs from SharePoint on component mount
   useEffect(() => {
@@ -160,7 +181,14 @@ const JobPositions = () => {
             filteredJobs.map((job) => (
               <div key={job.id} className="job-card">
                 <div className="job-info">
-                  <h3 className="job-position">{job.title}</h3>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="job-position">{job.title}</h3>
+                    {job.reference && (
+                      <span className="text-sm text-gray-500 font-mono">
+                        Ref: {job.reference}
+                      </span>
+                    )}
+                  </div>
                   <div className="job-meta">
                     <span className="job-icon">
                       <MapPin size={16} />
@@ -172,9 +200,17 @@ const JobPositions = () => {
                     </span>
                   </div>
                   <p className="job-summary">{job.summary}</p>
-                  <div className="job-posted">
-                    <Calendar size={14} />
-                    <span>Posted {job.posted}</span>
+                  <div className="flex justify-between items-center mt-3">
+                    <div className="job-posted">
+                      <Calendar size={14} />
+                      <span>Posted {job.posted}</span>
+                    </div>
+                    {job.closingDate && (
+                      <div className="job-posted text-red-600">
+                        <Clock size={14} />
+                        <span>Closes {formatClosingDate(job.closingDate)}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -184,7 +220,7 @@ const JobPositions = () => {
                     className="btn-green"
                     onClick={() => window.location.href = `/apply/${job.id}`}
                   >
-                    View Details
+                    Apply Now
                   </button>
                 </div>
               </div>
