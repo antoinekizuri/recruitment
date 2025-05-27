@@ -86,7 +86,7 @@ export default function SectionI({ formData, handleChange }) {
                             label="Telephone Number (Office Hours)"
                             type="tel"
                             value={ref.office_phone}
-                            onChange={(e) => handleReferenceChange(index, "telephone", e.target.value)}
+                            onChange={(e) => handleReferenceChange(index, "office_phone", e.target.value)}
                             required={index < 3}
                             tooltip="Work contact number of your reference"
                         />
