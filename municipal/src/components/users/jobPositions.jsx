@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Briefcase, MapPin, Calendar, Loader2, AlertCircle } from "lucide-react";
+import { Briefcase, MapPin, Calendar, Clock, Loader2, AlertCircle } from "lucide-react";
 import "./jobPositions.css";
 
 // Fallback static data in case API fails
@@ -34,12 +34,30 @@ const fallbackJobsData = [
 ];
 
 const filters = ["All Jobs", "Full-Time", "Part-Time", "Contract"];
+
 const JobPositions = () => {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("All Jobs");
   const [jobsData, setJobsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Helper function to clean HTML from SharePoint rich text fields
+  const cleanHtmlContent = (htmlString) => {
+    if (!htmlString) return '';
+    
+    // Create a temporary div to parse HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlString;
+    
+    // Extract plain text and clean up
+    let text = tempDiv.textContent || tempDiv.innerText || '';
+    
+    // Remove extra whitespace and line breaks
+    text = text.replace(/\s+/g, ' ').trim();
+    
+    return text;
+  };
 
   // Helper function to format closing date
   const formatClosingDate = (dateString) => {
@@ -87,7 +105,14 @@ const JobPositions = () => {
       const result = await response.json();
       
       if (result.success) {
-        setJobsData(result.data);
+        // Clean up the data before setting it
+        const cleanedData = result.data.map(job => ({
+          ...job,
+          summary: cleanHtmlContent(job.summary),
+          // Ensure id is treated as string for consistency
+          id: String(job.id)
+        }));
+        setJobsData(cleanedData);
       } else {
         throw new Error(result.error || 'Failed to fetch vacancies');
       }
