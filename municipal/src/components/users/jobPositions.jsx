@@ -174,7 +174,7 @@ const JobPositions = () => {
             />
             <button
               onClick={fetchVacancies}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              className="btn-refresh"
               disabled={loading}
             >
               {loading ? <Loader2 className="animate-spin" size={16} /> : "Refresh"}

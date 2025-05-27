@@ -185,7 +185,40 @@
   font-weight: 500;
   display: inline-block;
 }
+.btn-green:active {
+  transform: translateY(0);
+}
 
+.btn-refresh {
+  background-color: rgb(5, 61, 5);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.btn-refresh:hover {
+  background-color: rgb(18, 160, 18);
+  transform: translateY(-1px);
+}
+
+.btn-refresh:active {
+  transform: translateY(0);
+}
+
+.btn-refresh:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
 .btn-green {
   background-color: rgb(5, 61, 5);
   color: white;
