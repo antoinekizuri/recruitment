@@ -186,10 +186,10 @@ const transformFormDataForServer = (formData) => {
             current_study_qualification: formData.current_study_qualification || '',
         },
         sectionF: {
-            is_currently_employed: formData.is_currently_employed ? 'Yes' : 'No',
+            is_currently_employed: formData.is_currently_employed === 'yes' ? 'Yes' : 'No',
             current_employer: formData.current_employer_name, // Fixed field name
             current_employer_address: formData.current_employer_address || '', // Added missing field
-            employment_period: formData.employment_period,
+            employment_period: formData.employment_period || '',
             current_designation: formData.designation,
             current_pay_number: formData.pay_number, // Fixed field name
             reasons_for_leaving: formData.reason_for_leaving || '', // Added missing field
