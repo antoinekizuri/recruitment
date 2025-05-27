@@ -461,7 +461,7 @@ export default function FormContainer() {
 
                 // Navigate to success page
                 if (navigate) {
-                    navigate('/application-submitted');
+                    navigate('/');
                 } else {
                     // Reset form if no navigation available
                     resetForm();
