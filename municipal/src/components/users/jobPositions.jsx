@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Briefcase, MapPin, Calendar, Loader2, AlertCircle } from "lucide-react";
 import "./jobPositions.css";
-import { Briefcase, MapPin, Calendar } from "lucide-react";
 
-const jobsData = [
+// Fallback static data in case API fails
+const fallbackJobsData = [
   {
     id: 1,
     title: "City Planner",
     location: "City Hall, Downtown",
     department: "Urban Development",
-    summary:
-      "Join our urban planning team to help shape the future of our city through sustainable development and community-focused design.",
+    summary: "Join our urban planning team to help shape the future of our city through sustainable development and community-focused design.",
     posted: "2 days ago",
     type: "Full-Time",
   },
@@ -18,8 +18,7 @@ const jobsData = [
     title: "Environmental Specialist",
     location: "Environmental Center",
     department: "Environmental Services",
-    summary:
-      "Lead environmental initiatives and develop sustainability programs to protect our natural resources.",
+    summary: "Lead environmental initiatives and develop sustainability programs to protect our natural resources.",
     posted: "5 days ago",
     type: "Full-Time",
   },
@@ -28,50 +27,9 @@ const jobsData = [
     title: "Administrative Assistant",
     location: "Public Works Building",
     department: "Public Works",
-    summary:
-      "Provide administrative support, manage scheduling, and assist with departmental reports and communications.",
+    summary: "Provide administrative support, manage scheduling, and assist with departmental reports and communications.",
     posted: "1 day ago",
     type: "Part-Time",
-  },
-  {
-    id: 4,
-    title: "IT Support Technician",
-    location: "Technology Services Center",
-    department: "Information Technology",
-    summary:
-      "Troubleshoot and resolve technical issues for staff, maintain hardware/software, and support internal systems.",
-    posted: "3 days ago",
-    type: "Contract",
-  },
-  {
-    id: 5,
-    title: "Parks and Recreation Coordinator",
-    location: "Community Park Office",
-    department: "Recreation",
-    summary:
-      "Plan and coordinate community recreation programs, events, and facility usage.",
-    posted: "4 days ago",
-    type: "Part-Time",
-  },
-  {
-    id: 6,
-    title: "Civil Engineer",
-    location: "Infrastructure Division",
-    department: "Engineering",
-    summary:
-      "Design, oversee, and evaluate municipal construction projects including roads and drainage systems.",
-    posted: "2 days ago",
-    type: "Full-Time",
-  },
-  {
-    id: 7,
-    title: "Public Health Educator",
-    location: "Health Department",
-    department: "Public Health",
-    summary:
-      "Develop and implement health education campaigns to promote wellness and disease prevention.",
-    posted: "6 days ago",
-    type: "Contract",
   }
 ];
 
@@ -80,15 +38,68 @@ const filters = ["All Jobs", "Full-Time", "Part-Time", "Contract"];
 const JobPositions = () => {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("All Jobs");
+  const [jobsData, setJobsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch jobs from SharePoint on component mount
+  useEffect(() => {
+    fetchVacancies();
+  }, []);
+
+  const fetchVacancies = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await fetch('https://erecruitment-backend-aghxfgbqayf0atcr.southafricanorth-01.azurewebsites.net/vacancy_api.php', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setJobsData(result.data);
+      } else {
+        throw new Error(result.error || 'Failed to fetch vacancies');
+      }
+    } catch (err) {
+      console.error('Error fetching vacancies:', err);
+      setError(err.message);
+      // Use fallback data if API fails
+      setJobsData(fallbackJobsData);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredJobs = jobsData.filter((job) => {
-    const matchType =
-      activeFilter === "All Jobs" || job.type === activeFilter;
+    const matchType = activeFilter === "All Jobs" || job.type === activeFilter;
     const matchSearch =
       job.title.toLowerCase().includes(search.toLowerCase()) ||
       job.department.toLowerCase().includes(search.toLowerCase());
     return matchType && matchSearch;
   });
+
+  if (loading) {
+    return (
+      <section className="job-section">
+        <div className="job-container">
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="animate-spin mr-2" size={24} />
+            <span>Loading available positions...</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="job-section">
@@ -98,16 +109,31 @@ const JobPositions = () => {
           <p className="job-subtitle">
             Find your perfect role in our growing municipality
           </p>
+          {error && (
+            <div className="flex items-center text-orange-600 text-sm mt-2">
+              <AlertCircle size={16} className="mr-1" />
+              <span>Using cached data - {error}</span>
+            </div>
+          )}
         </div>
 
         <div className="job-controls">
-          <input
-            type="text"
-            placeholder="Search jobs..."
-            className="job-search-input"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="flex justify-between items-center mb-4">
+            <input
+              type="text"
+              placeholder="Search jobs..."
+              className="job-search-input flex-1 mr-4"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button
+              onClick={fetchVacancies}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              disabled={loading}
+            >
+              {loading ? <Loader2 className="animate-spin" size={16} /> : "Refresh"}
+            </button>
+          </div>
 
           <div className="job-filters">
             {filters.map((filter) => (
@@ -125,33 +151,45 @@ const JobPositions = () => {
         </div>
 
         <div className="job-list">
-          {filteredJobs.map((job) => (
-            <div key={job.id} className="job-card">
-              <div className="job-info">
-                <h3 className="job-position">{job.title}</h3>
-                <div className="job-meta">
-                  <span className="job-icon">
-                    <MapPin size={16} />
-                    {job.location}
-                  </span>
-                  <span className="job-icon">
-                    <Briefcase size={16} />
-                    {job.department}
-                  </span>
-                </div>
-                <p className="job-summary">{job.summary}</p>
-                <div className="job-posted">
-                  <Calendar size={14} />
-                  <span>Posted {job.posted}</span>
-                </div>
-              </div>
-
-              <div className="job-actions">
-                <span className="badge-type">{job.type}</span>
-                <button className="btn-green">View Details</button>
-              </div>
+          {filteredJobs.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <Briefcase size={48} className="mx-auto mb-4 opacity-50" />
+              <p>No positions found matching your criteria.</p>
             </div>
-          ))}
+          ) : (
+            filteredJobs.map((job) => (
+              <div key={job.id} className="job-card">
+                <div className="job-info">
+                  <h3 className="job-position">{job.title}</h3>
+                  <div className="job-meta">
+                    <span className="job-icon">
+                      <MapPin size={16} />
+                      {job.location}
+                    </span>
+                    <span className="job-icon">
+                      <Briefcase size={16} />
+                      {job.department}
+                    </span>
+                  </div>
+                  <p className="job-summary">{job.summary}</p>
+                  <div className="job-posted">
+                    <Calendar size={14} />
+                    <span>Posted {job.posted}</span>
+                  </div>
+                </div>
+
+                <div className="job-actions">
+                  <span className="badge-type">{job.type}</span>
+                  <button 
+                    className="btn-green"
+                    onClick={() => window.location.href = `/apply/${job.id}`}
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </section>
