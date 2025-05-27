@@ -189,6 +189,10 @@
   transform: translateY(0);
 }
 
+.btn-green:active {
+  transform: translateY(0);
+}
+
 .btn-refresh {
   background-color: rgb(5, 61, 5);
   color: white;
@@ -203,6 +207,7 @@
   align-items: center;
   gap: 0.5rem;
   white-space: nowrap;
+  margin-top: 10px;
 }
 
 .btn-refresh:hover {
