@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import FormStepper from "../FormStepper/FormStepper";
 import FormHeader from "../FormHeader/FormHeader";
 import SectionA from "../../../sections/SectionA/SectionA";
@@ -15,12 +15,16 @@ import SectionJ from "../../../sections/SectionJ/SectionJ";
 import ProgressIndicator from "../ProgressIndicator/ProgressIndicator";
 import './FormContainer.css';
 import { validateSectionE, validateSectionF, validateSectionG, validateSectionH, validateSectionJ } from "../../../utils/validators";
+
 export default function FormContainer() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [currentSection, setCurrentSection] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [formErrors, setFormErrors] = useState({});
+    const [isJobDataPopulated, setIsJobDataPopulated] = useState(false);
+
     const [formData, setFormData] = useState({
         // Section A - Details of Advertised Post
         position_title: "",
@@ -111,15 +115,31 @@ export default function FormContainer() {
         { id: "section-j", title: "Declaration", component: SectionJ }
     ];
 
-    // Save form data to localStorage whenever it changes
+    // Handle job data auto-population from JobPositions component
     useEffect(() => {
-        localStorage.setItem('applicationFormData', JSON.stringify(formData));
-    }, [formData]);
+        if (location.state?.jobData && location.state?.fromJobListing && !isJobDataPopulated) {
+            const jobData = location.state.jobData;
+            
+            setFormData(prevData => ({
+                ...prevData,
+                position_title: jobData.title || prevData.position_title,
+                reference_number: jobData.reference || prevData.reference_number,
+                department: jobData.department || prevData.department,
+            }));
 
-    // Load form data from localStorage on component mount
+            setIsJobDataPopulated(true);
+            
+            // Clear the navigation state to prevent re-population on re-renders
+            window.history.replaceState({}, document.title);
+            
+            console.log('Job data auto-populated:', jobData);
+        }
+    }, [location.state, isJobDataPopulated]);
+
+    // Load form data from localStorage on component mount (but don't override job data)
     useEffect(() => {
         const savedData = localStorage.getItem('applicationFormData');
-        if (savedData) {
+        if (savedData && !location.state?.fromJobListing) {
             try {
                 const parsedData = JSON.parse(savedData);
                 setFormData(parsedData);
@@ -127,7 +147,12 @@ export default function FormContainer() {
                 console.error('Error parsing saved form data:', error);
             }
         }
-    }, []);
+    }, [location.state]);
+
+    // Save form data to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem('applicationFormData', JSON.stringify(formData));
+    }, [formData]);
 
     // Transform FormContainer data structure to match Server expected format
     const transformFormDataForServer = (formData) => {
@@ -544,6 +569,7 @@ export default function FormContainer() {
         });
         setCurrentSection(0);
         setFormErrors({});
+        setIsJobDataPopulated(false);
     };
 
     const CurrentSectionComponent = sections[currentSection].component;
@@ -553,6 +579,16 @@ export default function FormContainer() {
     return (
         <div className="form-container">
             <FormHeader />
+            
+            {/* Show job auto-population notification */}
+            {location.state?.fromJobListing && currentSection === 0 && (
+                <div className="job-auto-populated-notice">
+                    <div className="alert alert-success">
+                        <strong>✓ Job Details Loaded:</strong> This form has been pre-filled with the selected job information ({formData.position_title} - {formData.reference_number}). Please review and continue.
+                    </div>
+                </div>
+            )}
+            
             <FormStepper
                 sections={sections}
                 currentSection={currentSection}

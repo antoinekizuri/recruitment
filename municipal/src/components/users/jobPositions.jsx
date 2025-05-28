@@ -13,6 +13,7 @@ const fallbackJobsData = [
     summary: "Join our urban planning team to help shape the future of our city through sustainable development and community-focused design.",
     posted: "2 days ago",
     type: "Full-Time",
+    reference: "CP-001/2025"
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const fallbackJobsData = [
     summary: "Lead environmental initiatives and develop sustainability programs to protect our natural resources.",
     posted: "5 days ago",
     type: "Full-Time",
+    reference: "ES-002/2025"
   },
   {
     id: 3,
@@ -31,6 +33,7 @@ const fallbackJobsData = [
     summary: "Provide administrative support, manage scheduling, and assist with departmental reports and communications.",
     posted: "1 day ago",
     type: "Part-Time",
+    reference: "AA-003/2025"
   }
 ];
 
@@ -81,6 +84,24 @@ const JobPositions = () => {
     } else {
       return date.toLocaleDateString();
     }
+  };
+
+  // Function to handle application navigation with job data
+  const handleApplyClick = (job) => {
+    const jobData = {
+      reference: job.reference_number || '',
+      title: job.title || '',
+      department: job.department || '',
+      position: job.title || '' // Using title as position as well
+    };
+
+    // Navigate to application form with job data as state
+    navigate("/apply-standard", { 
+      state: { 
+        jobData: jobData,
+        fromJobListing: true 
+      } 
+    });
   };
 
   // Fetch jobs from SharePoint on component mount
@@ -209,9 +230,9 @@ const JobPositions = () => {
                 <div className="job-info">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="job-position">{job.title}</h3>
-                    {job.reference && (
+                    {job.reference_number && (
                       <span className="text-sm text-gray-500 font-mono">
-                        Ref: {job.reference}
+                        Ref: {job.reference_number}
                       </span>
                     )}
                   </div>
@@ -244,9 +265,7 @@ const JobPositions = () => {
                   <span className="badge-type">{job.type}</span>
                   <button
                     className="btn-green"
-                    // onClick={() => window.location.href = `/apply/${job.id}`}
-                    onClick={() => navigate("/apply-senior")}
-
+                    onClick={() => handleApplyClick(job)}
                   >
                     Apply Now
                   </button>
