@@ -96,23 +96,23 @@ const JobPositions = () => {
       position: job.title || '' // Using title as position as well
     };
 
-    if(job.category.toLowerCase() === 'standard') {
-    // Navigate to application form with job data as state
-    navigate("/apply-standard", { 
-      state: { 
-        jobData: jobData,
-        fromJobListing: true 
-      } 
-    });
-  } else if (job.category.toLowerCase() === 'senior') {
-      // Navigate to senior management application form with job data as state
-      navigate("/apply-senior", { 
-        state: { 
-          jobData: jobData,
-          fromJobListing: true 
-        } 
+    const categoryPathMap = {
+      standard: "/apply-standard",
+      senior: "/apply-senior",
+    };
+
+    const category = job.category.toLowerCase();
+    const path = categoryPathMap[category];
+
+    if (path) {
+      navigate(path, {
+        state: {
+          jobData,
+          fromJobListing: true,
+        },
       });
     }
+
   };
 
   // Fetch jobs from SharePoint on component mount
