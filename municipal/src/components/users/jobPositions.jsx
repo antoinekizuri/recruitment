@@ -89,7 +89,7 @@ const JobPositions = () => {
   // Function to handle application navigation with job data
   const handleApplyClick = (job) => {
     const jobData = {
-      reference: job.reference_number || '',
+      reference: job.reference || '',
       title: job.title || '',
       department: job.department || '',
       position: job.title || '' // Using title as position as well

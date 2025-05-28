@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "../../components/users/TextInput/TextInput";
 import SelectInput from "../../components/users/SelectInput/SelectInput";
 import "./SectionA.css";
+import Loader from "../../components/users/Loader";
 
-export default function SectionA({ formData, handleChange }) {
+export default function SectionA({ formData, handleChange, isJobPrepopulated }) {
+  const [loadingJobData, setLoadingJobData] = useState(true);
+
+  useEffect(() => {
+    // Simulate async data loading or conditional prepopulation handling
+    const loadJobData = async () => {
+      if (isJobPrepopulated) {
+        // Simulate a delay or await actual data loading
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      setLoadingJobData(false);
+    };
+
+    loadJobData();
+  }, [isJobPrepopulated]);
+
+  if (loadingJobData) {
+    return <Loader message="Preparing form..." />;
+  }
+
   return (
     <div className="section-wrapper">
       <h2 className="section-title">A. DETAILS OF ADVERTISED POST</h2>
@@ -25,7 +45,7 @@ export default function SectionA({ formData, handleChange }) {
           required
           tooltip="Enter the exact job title as it appears in the advertisement"
           placeholder="e.g. Administrative Clerk"
-
+          disabled={isJobPrepopulated}
         />
 
         <TextInput
@@ -36,7 +56,9 @@ export default function SectionA({ formData, handleChange }) {
           required
           tooltip="Enter the reference number for this position as mentioned in the job advertisement"
           placeholder="e.g. Ref No: DOH-01/2025"
+          disabled={isJobPrepopulated}
         />
+
         <SelectInput
           label="Notice Service Period"
           name="notice_service_period"
@@ -44,11 +66,11 @@ export default function SectionA({ formData, handleChange }) {
           onChange={handleChange}
           options={[
             { label: "Immediately", value: "immediately" },
-            { label: "7 Days", value: "7_days" },
-            { label: "14 Days", value: "14_days" },
-            { label: "1 Month", value: "1_month" },
-            { label: "2 Months", value: "2_months" },
-            { label: "3 Months", value: "3_months" },
+            { label: "7 Days", value: "7 days" },
+            { label: "14 Days", value: "14 days" },
+            { label: "1 Month", value: "1 month" },
+            { label: "2 Months", value: "2 months" },
+            { label: "3 Months", value: "3 months" },
           ]}
           tooltip="If currently employed, state the notice period required before you can start"
         />
@@ -60,8 +82,8 @@ export default function SectionA({ formData, handleChange }) {
           onChange={handleChange}
           tooltip="Enter the department you're applying to or currently belong to"
           placeholder="e.g. Human Resources, Finance, etc."
+          disabled={isJobPrepopulated}
         />
-
       </div>
 
       <div className="section-tip">

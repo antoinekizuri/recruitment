@@ -13,6 +13,7 @@ export default function TextInput({
   type = "text",
   maxLength = null,
   className = "",
+  disabled = false,
   helperText = "" // <-- New
 }) {
   const [isFocused, setIsFocused] = useState(false);
@@ -32,6 +33,7 @@ export default function TextInput({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        disabled={disabled}
         maxLength={maxLength}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}

@@ -15,6 +15,7 @@ import SectionJ from "../../../sections/SectionJ/SectionJ";
 import ProgressIndicator from "../ProgressIndicator/ProgressIndicator";
 import './FormContainer.css';
 import { validateSectionE, validateSectionF, validateSectionG, validateSectionH, validateSectionJ } from "../../../utils/validators";
+import Loader from "../Loader";
 
 export default function FormContainer() {
     const navigate = useNavigate();
@@ -24,6 +25,8 @@ export default function FormContainer() {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [isJobDataPopulated, setIsJobDataPopulated] = useState(false);
+    const [loadingJobData, setLoadingJobData] = useState(true);
+    const [isFromJobListing, setIsFromJobListing] = useState(false);
 
     const [formData, setFormData] = useState({
         // Section A - Details of Advertised Post
@@ -65,9 +68,9 @@ export default function FormContainer() {
         pdp_expiry_date: "",
 
         // Section E - Qualifications
-        highest_school_grade: "",           // Changed from highest_school_qualification
+        highest_school_grade: "",
         school_name: "",
-        school_year_completed: "",          // Changed from school_completion_year
+        school_year_completed: "",
         qualifications: [],
 
         // Section F - Work Experience
@@ -119,7 +122,9 @@ export default function FormContainer() {
     useEffect(() => {
         if (location.state?.jobData && location.state?.fromJobListing && !isJobDataPopulated) {
             const jobData = location.state.jobData;
-            
+
+            console.log("[FormContainer] Populating job data from JobListing:", jobData);
+
             setFormData(prevData => ({
                 ...prevData,
                 position_title: jobData.title || prevData.position_title,
@@ -128,13 +133,19 @@ export default function FormContainer() {
             }));
 
             setIsJobDataPopulated(true);
-            
-            // Clear the navigation state to prevent re-population on re-renders
+            setIsFromJobListing(true);
+        }
+
+        // Set loading to false once jobData is populated (or skipped)
+        setLoadingJobData(false);
+
+        // Clean up state - but only after we've stored what we need
+        if (location.state?.fromJobListing) {
             window.history.replaceState({}, document.title);
-            
-            console.log('Job data auto-populated:', jobData);
         }
     }, [location.state, isJobDataPopulated]);
+
+    console.log("[FormContainer] isJobDataPopulated:", isJobDataPopulated);
 
     // Load form data from localStorage on component mount (but don't override job data)
     useEffect(() => {
@@ -172,7 +183,7 @@ export default function FormContainer() {
                 id_number: formData.id_number,
                 race: formData.race,
                 gender: formData.gender,
-                has_disability: formData.has_disability ? 'Yes' : 'No', // Fixed field name
+                has_disability: formData.has_disability ? 'Yes' : 'No',
                 disability_details: formData.disability_details,
                 is_south_african: formData.is_south_african ? 'Yes' : 'No',
                 nationality: formData.nationality,
@@ -180,7 +191,7 @@ export default function FormContainer() {
                 has_professional_membership: formData.has_professional_membership ? 'Yes' : 'No',
                 professional_body: formData.professional_body,
                 membership_number: formData.membership_number,
-                expiry_date: formData.expiry_date, // Fixed field name
+                expiry_date: formData.expiry_date,
             },
             sectionC: {
                 preferred_language: formData.preferred_language,
@@ -189,7 +200,7 @@ export default function FormContainer() {
                 email: formData.email,
                 residential_address: formData.residential_address,
                 postal_address: formData.postal_address,
-                postal_code: formData.postal_code, // Added missing field
+                postal_code: formData.postal_code,
             },
             sectionD: {
                 license_codes: formData.license_codes,
@@ -201,12 +212,10 @@ export default function FormContainer() {
                 highest_school_grade: formData.highest_school_grade,
                 school_name: formData.school_name,
                 school_year_completed: formData.school_year_completed,
-                // Handle multiple tertiary qualifications - concatenate with semicolons
                 highest_tertiary_qualification: formData.qualifications?.map(q => q.qualification).filter(Boolean).join('; ') || '',
                 tertiary_institution: formData.qualifications?.map(q => q.institution).filter(Boolean).join('; ') || '',
                 nqf_level: formData.qualifications?.map(q => q.nqf_level).filter(Boolean).join('; ') || '',
                 tertiary_qualification_year: formData.qualifications?.map(q => q.year_obtained).filter(Boolean).join('; ') || '',
-                // Added current study fields
                 current_study_institution: formData.current_study_institution || '',
                 current_study_qualification: formData.current_study_qualification || '',
             },
@@ -214,33 +223,25 @@ export default function FormContainer() {
                 is_currently_employed: formData.is_currently_employed === 'yes' ? 'Yes' : 'No',
                 current_employer: formData.current_employer_name,
                 current_employer_address: formData.current_employer_address || '',
-                employment_period: formData.employment_period || '', // This is correct
-                current_designation: formData.current_designation, // Fixed: was formData.designation
+                employment_period: formData.employment_period || '',
+                current_designation: formData.current_designation,
                 current_pay_number: formData.pay_number,
                 reasons_for_leaving: formData.reason_for_leaving || '',
-
-                // Handle multiple previous employers - concatenate with semicolons
                 previous_employer_1: formData.previous_employers?.map(emp => emp.employer_name).filter(Boolean).join('; ') || '',
                 position_1: formData.previous_employers?.map(emp => emp.position).filter(Boolean).join('; ') || '',
-
-                // Fix date mapping - combine month and year into proper dates
                 start_date: formData.previous_employers?.map(emp => {
                     if (emp.from_month && emp.from_year) {
                         return `${emp.from_month}/${emp.from_year}`;
                     }
                     return '';
                 }).filter(Boolean).join('; ') || '',
-
                 end_date: formData.previous_employers?.map(emp => {
                     if (emp.to_month && emp.to_year) {
                         return `${emp.to_month}/${emp.to_year}`;
                     }
                     return '';
                 }).filter(Boolean).join('; ') || '',
-
                 reason_to_leave: formData.previous_employers?.map(emp => emp.reason_for_leaving).filter(Boolean).join('; ') || '',
-
-                // Fix field name mismatch
                 has_reemployment_restriction: formData.has_reemployment_restriction === 'yes' ? 'Yes' : 'No',
                 previous_municipality: formData.previous_municipality_name || '',
             },
@@ -259,7 +260,6 @@ export default function FormContainer() {
                 criminal_case_outcome: formData.criminal_case_outcome,
             },
             sectionI: {
-                // Handle multiple references - concatenate with semicolons
                 referee_name: formData.references?.map(ref => ref.name).filter(Boolean).join('; ') || '',
                 referee_relationship: formData.references?.map(ref => ref.relationship).filter(Boolean).join('; ') || '',
                 referee_office_phone: formData.references?.map(ref => ref.office_phone).filter(Boolean).join('; ') || '',
@@ -307,7 +307,6 @@ export default function FormContainer() {
                 break;
 
             case 'section-d':
-                // Driver's license validation (optional section)
                 if (formData.license_codes && !formData.license_expiry_date) {
                     errors.license_expiry_date = 'License expiry date is required when license codes are provided';
                 }
@@ -322,7 +321,6 @@ export default function FormContainer() {
 
             case 'section-f':
                 const sectionFValidation = validateSectionF(formData);
-
                 if (!sectionFValidation.isValid) {
                     Object.assign(errors, sectionFValidation.errors);
                 }
@@ -330,7 +328,6 @@ export default function FormContainer() {
 
             case 'section-g':
                 const sectionGValidation = validateSectionG(formData);
-
                 if (!sectionGValidation.isValid) {
                     Object.assign(errors, sectionGValidation.errors);
                 }
@@ -338,7 +335,6 @@ export default function FormContainer() {
 
             case 'section-h':
                 const sectionHValidation = validateSectionH(formData);
-
                 if (!sectionHValidation.isValid) {
                     Object.assign(errors, sectionHValidation.errors);
                 }
@@ -360,10 +356,10 @@ export default function FormContainer() {
 
             case 'section-j':
                 const sectionJValidation = validateSectionJ(formData);
-
                 if (!sectionJValidation.isValid) {
                     Object.assign(errors, sectionJValidation.errors);
-                } break;
+                }
+                break;
 
             default:
                 break;
@@ -378,7 +374,6 @@ export default function FormContainer() {
         const allErrors = {};
         let isValid = true;
 
-        // Validate all sections
         sections.forEach((section, index) => {
             const previousSection = currentSection;
             setCurrentSection(index);
@@ -417,11 +412,9 @@ export default function FormContainer() {
                 setCurrentSection(currentSection + 1);
                 window.scrollTo(0, 0);
             } else {
-                // Last section, show confirmation
                 setShowConfirmation(true);
             }
         } else {
-            // Scroll to first error
             const firstErrorElement = document.querySelector('.error, .field-error');
             if (firstErrorElement) {
                 firstErrorElement.scrollIntoView({ behavior: 'smooth' });
@@ -444,7 +437,6 @@ export default function FormContainer() {
     };
 
     const handleSubmit = async () => {
-        // Final validation before submission
         if (!validateEntireForm()) {
             setShowConfirmation(false);
             alert('Please fix all errors before submitting the application.');
@@ -454,7 +446,6 @@ export default function FormContainer() {
         setIsSubmitting(true);
 
         try {
-            // Transform the data to match your server's expected format
             const transformedData = transformFormDataForServer(formData);
 
             console.log('Submitting form data:', transformedData);
@@ -475,24 +466,18 @@ export default function FormContainer() {
             console.log('Server response:', result);
 
             if (response.ok && result.success) {
-                // Success - store reference and navigate
                 localStorage.setItem('applicationReference', result.id || result.referenceNumber || 'N/A');
                 localStorage.setItem('submissionTitle', result.submissionTitle || 'Application Submitted Successfully');
-
-                // Clear saved form data
                 localStorage.removeItem('applicationFormData');
 
                 alert('Application submitted successfully!');
 
-                // Navigate to success page
                 if (navigate) {
                     navigate('/');
                 } else {
-                    // Reset form if no navigation available
                     resetForm();
                 }
             } else {
-                // Handle server-side validation errors
                 console.log('Server Error:', JSON.stringify(result.errors));
 
                 if (result.errors && Array.isArray(result.errors)) {
@@ -541,10 +526,10 @@ export default function FormContainer() {
             license_expiry_date: "",
             has_pdp: false,
             pdp_expiry_date: "",
-            highest_school_grade: "",           // UPDATED
+            highest_school_grade: "",
             school_name: "",
-            school_year_completed: "",          // UPDATED
-            qualifications: [],                 // UPDATED
+            school_year_completed: "",
+            qualifications: [],
             is_currently_employed: false,
             current_employer: "",
             employment_period: "",
@@ -575,20 +560,24 @@ export default function FormContainer() {
     const CurrentSectionComponent = sections[currentSection].component;
     const progress = ((currentSection + 1) / sections.length) * 100;
     const currentSectionErrors = formErrors[sections[currentSection].id] || {};
+    
+    if (loadingJobData) {
+        return <Loader message="Preparing form..." />;
+    }
 
     return (
         <div className="form-container">
             <FormHeader />
-            
+
             {/* Show job auto-population notification */}
-            {location.state?.fromJobListing && currentSection === 0 && (
+            {isJobDataPopulated && currentSection === 0 && (
                 <div className="job-auto-populated-notice">
                     <div className="alert alert-success">
                         <strong>✓ Job Details Loaded:</strong> This form has been pre-filled with the selected job information ({formData.position_title} - {formData.reference_number}). Please review and continue.
                     </div>
                 </div>
             )}
-            
+
             <FormStepper
                 sections={sections}
                 currentSection={currentSection}
@@ -600,6 +589,7 @@ export default function FormContainer() {
                 <CurrentSectionComponent
                     formData={formData}
                     handleChange={handleChange}
+                    isJobPrepopulated={isJobDataPopulated}
                     errors={currentSectionErrors}
                 />
 
