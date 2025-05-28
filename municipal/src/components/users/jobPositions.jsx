@@ -230,9 +230,9 @@ const JobPositions = () => {
                 <div className="job-info">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="job-position">{job.title}</h3>
-                    {job.reference_number && (
+                    {job.reference && (
                       <span className="text-sm text-gray-500 font-mono">
-                        Ref: {job.reference_number}
+                        Ref: {job.reference}
                       </span>
                     )}
                   </div>
