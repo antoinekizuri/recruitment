@@ -569,14 +569,6 @@ export default function FormContainer() {
         <div className="form-container">
             <FormHeader />
 
-            {/* Show job auto-population notification */}
-            {isJobDataPopulated && currentSection === 0 && (
-                <div className="job-auto-populated-notice">
-                    <div className="alert alert-success">
-                        <strong>✓ Job Details Loaded:</strong> This form has been pre-filled with the selected job information ({formData.position_title} - {formData.reference_number}). Please review and continue.
-                    </div>
-                </div>
-            )}
 
             <FormStepper
                 sections={sections}

@@ -43,6 +43,7 @@ export default function SectionBSenior({ formData, handleChange }) {
           value={formData.surname}
           onChange={handleChange}
           required
+          tooltip="Your family name as it appears on your ID document"
         />
 
         <TextInput
@@ -51,6 +52,8 @@ export default function SectionBSenior({ formData, handleChange }) {
           value={formData.first_names}
           onChange={handleChange}
           required
+          tooltip="Your given name(s) as they appear on your ID document"
+
         />
 
         <TextInput
@@ -59,6 +62,7 @@ export default function SectionBSenior({ formData, handleChange }) {
           value={formData.id_number}
           onChange={handleChange}
           required
+          tooltip="Enter your 13-digit South African ID number or passport number for non-SA citizens"
         />
       </div>
 

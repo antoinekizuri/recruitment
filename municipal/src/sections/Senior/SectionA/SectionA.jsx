@@ -1,8 +1,26 @@
-import React from "react";
+import React , { useEffect, useState } from "react";
 import TextInput from "../../../components/users/TextInput/TextInput";
 import "./SectionA.css";
+import SelectInput from "../../../components/users/SeniorForm/SelectInput/SelectInput";
+import Loader from "../../../components/users/Loader";
 
-export default function SectionASenior({ formData, handleChange }) {
+export default function SectionASenior({ formData, handleChange, isJobPrepopulated }) {
+  const [loadingJobData, setLoadingJobData] = useState(true);
+
+  useEffect(() => {
+    const loadJobData = async () => {
+      if (isJobPrepopulated) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      setLoadingJobData(false);
+    };
+
+    loadJobData();
+  }, [isJobPrepopulated]);
+
+  if (loadingJobData) {
+    return <Loader message="Preparing form..." />;
+  }
 
   return (
     <div className="section-wrapper">
@@ -15,15 +33,6 @@ export default function SectionASenior({ formData, handleChange }) {
       </div>
 
       <div className="section-fields">
-        <TextInput
-          label="Municipality/Entity"
-          name="municipality_entity"
-          value={formData.municipality_entity || ''}
-          onChange={handleChange}
-          required
-          tooltip="Enter the name of the municipality or entity offering the position"
-
-        />
 
         <TextInput
           label="Advertised Post Being Applied For"
@@ -46,18 +55,36 @@ export default function SectionASenior({ formData, handleChange }) {
 
         />
 
-        <TextInput
-          label="Notice Period Required"
+        <SelectInput
+          label="Notice Service Period"
           name="notice_service_period"
           value={formData.notice_service_period}
           onChange={handleChange}
-          tooltip="State your current employment notice period, if applicable"
+          options={[
+            { label: "Immediately", value: "immediately" },
+            { label: "7 Days", value: "7 days" },
+            { label: "14 Days", value: "14 days" },
+            { label: "1 Month", value: "1 month" },
+            { label: "2 Months", value: "2 months" },
+            { label: "3 Months", value: "3 months" },
+          ]}
+          tooltip="If currently employed, state the notice period required before you can start"
+        />
+
+        <TextInput
+          label="Department"
+          name="department"
+          value={formData.department}
+          onChange={handleChange}
+          tooltip="Enter the department you're applying to or currently belong to"
+          placeholder="e.g. Human Resources, Finance, etc."
+          disabled={isJobPrepopulated}
         />
       </div>
 
       <div className="section-tip">
         <p>
-          <strong>Reminder:</strong> Ensure the position title and reference number match the official advertisement.
+          <strong>Tip:</strong> Double-check your job details before proceeding to ensure correct matching.
         </p>
       </div>
     </div>

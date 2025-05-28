@@ -14,7 +14,7 @@ export default function TextInput({
   maxLength = null,
   className = "",
   disabled = false,
-  helperText = "" // <-- New
+  helperText = "" 
 }) {
   const [isFocused, setIsFocused] = useState(false);
 

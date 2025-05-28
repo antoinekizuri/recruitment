@@ -8,10 +8,8 @@ export default function SectionA({ formData, handleChange, isJobPrepopulated }) 
   const [loadingJobData, setLoadingJobData] = useState(true);
 
   useEffect(() => {
-    // Simulate async data loading or conditional prepopulation handling
     const loadJobData = async () => {
       if (isJobPrepopulated) {
-        // Simulate a delay or await actual data loading
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
       setLoadingJobData(false);

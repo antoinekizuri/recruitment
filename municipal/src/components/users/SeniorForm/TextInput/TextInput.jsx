@@ -12,7 +12,9 @@ export default function TextInput({
   tooltip = "",
   type = "text",
   maxLength = null,
-  className = ""
+  className = "",
+  disabled = false,
+  helperText = ""
 }) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -31,11 +33,18 @@ export default function TextInput({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        disabled={disabled}
         maxLength={maxLength}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         className="input-field"
       />
+
+      {helperText && (
+        <small className="helper-text">
+          {helperText}
+        </small>
+      )}
     </div>
   );
 }
