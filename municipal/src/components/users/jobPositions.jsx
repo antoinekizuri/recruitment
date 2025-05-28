@@ -89,12 +89,14 @@ const JobPositions = () => {
   // Function to handle application navigation with job data
   const handleApplyClick = (job) => {
     const jobData = {
+      category: job.category || '',
       reference: job.reference || '',
       title: job.title || '',
       department: job.department || '',
       position: job.title || '' // Using title as position as well
     };
 
+    if(job.category.toLowerCase() === 'standard') {
     // Navigate to application form with job data as state
     navigate("/apply-standard", { 
       state: { 
@@ -102,6 +104,15 @@ const JobPositions = () => {
         fromJobListing: true 
       } 
     });
+  } else if (job.category.toLowerCase() === 'senior') {
+      // Navigate to senior management application form with job data as state
+      navigate("/apply-senior", { 
+        state: { 
+          jobData: jobData,
+          fromJobListing: true 
+        } 
+      });
+    }
   };
 
   // Fetch jobs from SharePoint on component mount
