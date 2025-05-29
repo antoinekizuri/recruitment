@@ -1,46 +1,7 @@
-// import React from "react";
-// import TextInput from "../../../components/users/TextInput/TextInput";
-// import DateInput from "../../../components/users/DateInput/DateInput";
 
-// export default function SectionDSenior({ formData, handleChange }) {
-//   return (
-//     <div className="section-container">
-//       <h2 className="section-title">D. DRIVER'S LICENCE DETAILS</h2>
-
-//       <div className="mb-6">
-//         <TextInput
-//           label="License Code(s) (e.g., B, C1, EB)"
-//           name="license_codes"
-//           value={formData.license_codes}
-//           onChange={handleChange}
-//           required
-//           tooltip="Specify all driver’s license codes you currently hold"
-//         />
-//       </div>
-
-//       <div className="mb-6">
-//         <DateInput
-//           label="Licence Expiry Date"
-//           name="license_expiry_date"
-//           value={formData.license_expiry_date}
-//           onChange={handleChange}
-//           required
-//           tooltip="Provide the expiry date of your most current driver’s licence"
-//         />
-//       </div>
-
-//       <div className="section-note">
-//         <p className="text-sm text-blue-800">
-//           <span className="font-bold">Note:</span> Senior positions may require a valid driver's licence. 
-//           Ensure all licence information provided is valid and verifiable.
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
 import React from "react";
-import TextInput from "../../../components/users/TextInput/TextInput";
-import SelectInput from "../../../components/users/SelectInput/SelectInput";
+import TextInput from "../../../components/users/SeniorForm/TextInput/TextInput";
+import SelectInput from "../../../components/users/SeniorForm/SelectInput/SelectInput";
 import "./SectionD.css";
 
 export default function SectionDSenior({ formData, handleChange }) {
@@ -62,7 +23,30 @@ export default function SectionDSenior({ formData, handleChange }) {
       return { value: year.toString(), label: year.toString() };
     })
   ];
+  const handleAddQualification = () => {
+    handleChange({
+      target: {
+        name: "qualifications",
+        value: [
+          ...(formData.qualifications || []),
+          { qualification: "", institution: "", nqf_level: "", year_obtained: "" }
+        ]
+      }
+    });
+    setShowAddQualification(false);
+  };
 
+  const handleRemoveQualification = (index) => {
+    const updatedQualifications = [...formData.qualifications];
+    updatedQualifications.splice(index, 1);
+    handleChange({ target: { name: "qualifications", value: updatedQualifications } });
+  };
+
+  const handleQualificationChange = (index, field, value) => {
+    const updatedQualifications = [...(formData.qualifications || [])];
+    updatedQualifications[index] = { ...updatedQualifications[index], [field]: value };
+    handleChange({ target: { name: "qualifications", value: updatedQualifications } });
+  };
   return (
     <div className="section-container">
       <h2 className="section-title">D. ACADEMIC QUALIFICATIONS</h2>
@@ -111,38 +95,13 @@ export default function SectionDSenior({ formData, handleChange }) {
             tooltip="Year you completed this qualification"
           />
         </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload Certified Qualification Document
-          </label>
-          <input
-            type="file"
-            accept=".pdf,.jpg,.jpeg,.png"
-            name="senior_qualification_file"
-            onChange={(e) =>
-              handleChange({
-                target: {
-                  name: "senior_qualification_file",
-                  value: e.target.files[0]
-                }
-              })
-            }
-            className="file-input"
-          />
-          {formData.senior_qualification_file && (
-            <p className="text-sm text-gray-600 mt-1 truncate">
-              Selected File:{" "}
-              <strong>{formData.senior_qualification_file.name}</strong>
-            </p>
-          )}
-        </div>
       </div>
 
       <div className="section-note mt-6">
         <p className="text-sm text-blue-800">
-          <span className="font-bold">Note:</span> Certified copies of qualifications must be
-          submitted. Only relevant qualifications will be considered.
+          <span className="font-bold">Note:</span> You will be required to upload certified copies
+          of all qualifications in Section H (Supporting Documents). The City of Polokwane reserves
+          the right to verify all qualifications with the relevant institutions.
         </p>
       </div>
     </div>

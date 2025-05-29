@@ -560,7 +560,7 @@ export default function FormContainer() {
     const CurrentSectionComponent = sections[currentSection].component;
     const progress = ((currentSection + 1) / sections.length) * 100;
     const currentSectionErrors = formErrors[sections[currentSection].id] || {};
-    
+
     if (loadingJobData) {
         return <Loader message="Preparing form..." />;
     }

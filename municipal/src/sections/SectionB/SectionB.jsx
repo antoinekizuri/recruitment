@@ -186,6 +186,7 @@ export default function SectionB({ formData, handleChange }) {
             onChange={handleYesNoChange}
             options={yesNoOptions}
             inline
+            required
             tooltip="Indicate if you are registered with any professional organization relevant to the position"
           />
         </div>

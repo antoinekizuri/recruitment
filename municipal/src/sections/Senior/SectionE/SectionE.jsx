@@ -1,118 +1,8 @@
-// import React from "react";
-// import TextInput from "../../../components/users/TextInput/TextInput";
-// import SelectInput from "../../../components/users/SelectInput/SelectInput";
-// import "./SectionE.css";
-
-// export default function SectionESenior({ formData, handleChange }) {
-//   const nqfLevelOptions = [
-//     { value: "4", label: "NQF Level 4 (Matric/Grade 12)" },
-//     { value: "5", label: "NQF Level 5 (Higher Certificate)" },
-//     { value: "6", label: "NQF Level 6 (Diploma)" },
-//     { value: "7", label: "NQF Level 7 (Bachelor’s Degree)" },
-//     { value: "8", label: "NQF Level 8 (Honours/Postgrad Diploma)" },
-//     { value: "9", label: "NQF Level 9 (Master’s Degree)" },
-//     { value: "10", label: "NQF Level 10 (Doctorate)" }
-//   ];
-
-//   const currentYear = new Date().getFullYear();
-//   const yearOptions = [
-//     { value: "", label: "Select Year" },
-//     ...Array.from({ length: currentYear - 1960 }, (_, i) => {
-//       const year = currentYear - i;
-//       return { value: year.toString(), label: year.toString() };
-//     })
-//   ];
-
-//   return (
-//     <div className="section-container">
-//       <h2 className="section-title">E. ACADEMIC QUALIFICATIONS</h2>
-
-//       <p className="text-sm text-gray-600 mb-4">
-//         Please list your highest academic qualifications. Attach certified copies as required.
-//       </p>
-
-//       <div className="space-y-4">
-//         <TextInput
-//           label="Qualification Title"
-//           name="senior_qualification"
-//           value={formData.senior_qualification}
-//           onChange={handleChange}
-//           required
-//           tooltip="E.g. Bachelor of Public Administration, Honours in Political Science"
-//         />
-
-//         <TextInput
-//           label="Institution Name"
-//           name="senior_institution"
-//           value={formData.senior_institution}
-//           onChange={handleChange}
-//           required
-//           tooltip="Name of the university or college"
-//         />
-
-//         <div className="grid-two-columns">
-//           <SelectInput
-//             label="NQF Level"
-//             name="senior_nqf_level"
-//             value={formData.senior_nqf_level}
-//             onChange={handleChange}
-//             options={nqfLevelOptions}
-//             required
-//             tooltip="Select the NQF level for this qualification"
-//           />
-
-//           <SelectInput
-//             label="Year Obtained"
-//             name="senior_year_obtained"
-//             value={formData.senior_year_obtained}
-//             onChange={handleChange}
-//             options={yearOptions}
-//             required
-//             tooltip="Year you completed this qualification"
-//           />
-//         </div>
-
-//         <div>
-//           <label className="block text-sm font-medium text-gray-700 mb-1">
-//             Upload Certified Qualification Document
-//           </label>
-//           <input
-//             type="file"
-//             accept=".pdf,.jpg,.jpeg,.png"
-//             name="senior_qualification_file"
-//             onChange={(e) =>
-//               handleChange({
-//                 target: {
-//                   name: "senior_qualification_file",
-//                   value: e.target.files[0]
-//                 }
-//               })
-//             }
-//             className="file-input"
-//           />
-//           {formData.senior_qualification_file && (
-//             <p className="text-sm text-gray-600 mt-1 truncate">
-//               Selected File:{" "}
-//               <strong>{formData.senior_qualification_file.name}</strong>
-//             </p>
-//           )}
-//         </div>
-//       </div>
-
-//       <div className="section-note mt-6">
-//         <p className="text-sm text-blue-800">
-//           <span className="font-bold">Note:</span> Certified copies of qualifications must be
-//           submitted. Only relevant qualifications will be considered.
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
 import React, { useState } from "react";
-import TextInput from "../../../components/users/TextInput/TextInput";
-import SelectInput from "../../../components/users/SelectInput/SelectInput";
+import TextInput from "../../../components/users/SeniorForm/TextInput/TextInput";
+import SelectInput from "../../../components/users/SeniorForm/SelectInput/SelectInput";
 
-export default function SectioneESenior({ formData, handleChange }) {
+export default function SectionESenior({ formData, handleChange, errors = {} }) {
   const [showAddEmployer, setShowAddEmployer] = useState(false);
 
   const monthOptions = [
@@ -133,6 +23,12 @@ export default function SectioneESenior({ formData, handleChange }) {
       const year = currentYear - i;
       return { value: year.toString(), label: year.toString() };
     })
+  ];
+
+  const yesNoOptions = [
+    { value: "", label: "Select" },
+    { value: "yes", label: "Yes" },
+    { value: "no", label: "No" }
   ];
 
   const handleAddEmployer = () => {
@@ -171,156 +67,285 @@ export default function SectioneESenior({ formData, handleChange }) {
     handleChange({ target: { name: "senior_employment_history", value: updated } });
   };
 
+  // Helper function to get error for a specific field
+  const getFieldError = (index, field) => {
+    return errors[`senior_employment_history[${index}].${field}`];
+  };
+
+  // Helper function to get date range error
+  const getDateError = (index, dateType) => {
+    return errors[`senior_employment_history[${index}].${dateType}`];
+  };
+
   return (
     <div className="section-container">
       <h2 className="section-title">E. EMPLOYMENT RECORD</h2>
 
-      <p className="text-sm text-gray-600 mb-4">
-        Please list your employment record, starting with the most recent. Include senior management roles relevant to this application.
+      <p className="text-sm text-gray-600 mb-6">
+        Please provide details about your current and previous employment history.
       </p>
 
-      {(formData.senior_employment_history || []).map((employer, index) => (
-        <div
-          key={index}
-          className="mb-6 p-4 border border-gray-200 rounded-md shadow-sm"
-        >
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="text-gray-700 font-medium">Employer {index + 1}</h4>
+      {/* Current Employment Status */}
+      <div className="mb-6 p-4 bg-gray-50 rounded-md">
+        <h3 className="text-lg font-medium mb-4">Current Employment Status</h3>
+        
+        <SelectInput
+          label="Are you currently employed?"
+          name="is_currently_employed"
+          value={formData.is_currently_employed}
+          onChange={handleChange}
+          options={yesNoOptions}
+          required
+          error={errors.is_currently_employed}
+        />
+
+        {formData.is_currently_employed === 'yes' && (
+          <>
+            <div className="grid-two-columns gap-4 mt-4">
+              <TextInput
+                label="Current Employer Name"
+                name="current_employer_name"
+                value={formData.current_employer_name}
+                onChange={handleChange}
+                required
+                error={errors.current_employer_name}
+              />
+              
+              <TextInput
+                label="Employment Period"
+                name="current_employment_period"
+                value={formData.current_employment_period}
+                onChange={handleChange}
+                required
+                placeholder="e.g., Jan 2020 - Present"
+                error={errors.current_employment_period}
+                tooltip="Indicate the period you have been with your current employer"
+              />
+            </div>
+
+            {/* Show additional fields if current employer is City of Polokwane */}
+            {formData.current_employer_name?.toLowerCase().trim() === 'city of polokwane' && (
+              <div className="grid-two-columns gap-4 mt-4">
+                <TextInput
+                  label="Current Designation"
+                  name="current_designation"
+                  value={formData.current_designation}
+                  onChange={handleChange}
+                  required
+                  error={errors.current_designation}
+                />
+                
+                <TextInput
+                  label="Pay Number"
+                  name="pay_number"
+                  value={formData.pay_number}
+                  onChange={handleChange}
+                  required
+                  error={errors.pay_number}
+                />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Re-employment Restriction */}
+      <div className="mb-6 p-4 bg-gray-50 rounded-md">
+        <h3 className="text-lg font-medium mb-4">Re-employment Restriction</h3>
+        
+        <SelectInput
+          label="Do you have any re-employment restrictions from a previous municipality?"
+          name="has_reemployment_restriction"
+          value={formData.has_reemployment_restriction}
+          onChange={handleChange}
+          options={yesNoOptions}
+          required
+          error={errors.has_reemployment_restriction}
+          tooltip="Indicate if you have been restricted from re-employment by any municipality"
+        />
+
+        {formData.has_reemployment_restriction === 'yes' && (
+          <TextInput
+            label="Previous Municipality Name"
+            name="previous_municipality_name"
+            value={formData.previous_municipality_name}
+            onChange={handleChange}
+            required
+            error={errors.previous_municipality_name}
+            className="mt-4"
+          />
+        )}
+      </div>
+
+      {/* Employment History */}
+      <div className="mb-6">
+        <h3 className="text-lg font-medium mb-4">Senior Employment History</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Please list your senior management employment record, starting with the most recent.
+        </p>
+
+        {(formData.senior_employment_history || []).map((employer, index) => (
+          <div
+            key={index}
+            className="mb-6 p-4 border border-gray-200 rounded-md shadow-sm"
+          >
+            <div className="flex justify-between items-center mb-3">
+              <h4 className="text-gray-700 font-medium">Employer {index + 1}</h4>
+              <button
+                type="button"
+                onClick={() => handleRemoveEmployer(index)}
+                className="btn btn-danger"
+              >
+                Remove
+              </button>
+            </div>
+
+            <div className="grid-two-columns gap-4 mb-4">
+              <TextInput
+                label="Employer Name"
+                value={employer.employer_name}
+                onChange={(e) =>
+                  handleEmployerChange(index, "employer_name", e.target.value)
+                }
+                required
+                error={getFieldError(index, "employer_name")}
+              />
+              <TextInput
+                label="Position Held"
+                value={employer.position_held}
+                onChange={(e) =>
+                  handleEmployerChange(index, "position_held", e.target.value)
+                }
+                required
+                error={getFieldError(index, "position_held")}
+              />
+            </div>
+
+            <div className="grid-two-columns mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  From *
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <SelectInput
+                    value={employer.from_month}
+                    onChange={(e) =>
+                      handleEmployerChange(index, "from_month", e.target.value)
+                    }
+                    options={monthOptions}
+                    error={getDateError(index, "from")}
+                  />
+                  <SelectInput
+                    value={employer.from_year}
+                    onChange={(e) =>
+                      handleEmployerChange(index, "from_year", e.target.value)
+                    }
+                    options={yearOptions}
+                    error={getDateError(index, "from")}
+                  />
+                </div>
+                {getDateError(index, "from") && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {getDateError(index, "from")}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  To *
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <SelectInput
+                    value={employer.to_month}
+                    onChange={(e) =>
+                      handleEmployerChange(index, "to_month", e.target.value)
+                    }
+                    options={monthOptions}
+                    error={getDateError(index, "to")}
+                  />
+                  <SelectInput
+                    value={employer.to_year}
+                    onChange={(e) =>
+                      handleEmployerChange(index, "to_year", e.target.value)
+                    }
+                    options={yearOptions}
+                    error={getDateError(index, "to")}
+                  />
+                </div>
+                {getDateError(index, "to") && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {getDateError(index, "to")}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid-two-columns gap-4 mb-4">
+              <TextInput
+                label="Reason for Leaving"
+                value={employer.reason_for_leaving}
+                onChange={(e) =>
+                  handleEmployerChange(index, "reason_for_leaving", e.target.value)
+                }
+                required
+                error={getFieldError(index, "reason_for_leaving")}
+              />
+              <TextInput
+                label="Contact Person"
+                value={employer.contact_person}
+                onChange={(e) =>
+                  handleEmployerChange(index, "contact_person", e.target.value)
+                }
+                required
+                error={getFieldError(index, "contact_person")}
+              />
+            </div>
+
+            <TextInput
+              label="Contact Number"
+              value={employer.contact_number}
+              onChange={(e) =>
+                handleEmployerChange(index, "contact_number", e.target.value)
+              }
+              type="tel"
+              required
+              error={getFieldError(index, "contact_number")}
+            />
+          </div>
+        ))}
+
+        {showAddEmployer ? (
+          <div className="flex flex-wrap gap-3 mt-4">
             <button
               type="button"
-              onClick={() => handleRemoveEmployer(index)}
-              className="text-sm font-medium text-red-600 hover:text-red-800"
+              onClick={handleAddEmployer}
+              className="btn btn-primary"
             >
-              Remove
+              + Confirm Add Employer
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowAddEmployer(false)}
+              className="btn btn-secondary"
+            >
+              Cancel
             </button>
           </div>
-
-          <div className="grid-two-columns gap-4 mb-4">
-            <TextInput
-              label="Employer Name"
-              value={employer.employer_name}
-              onChange={(e) =>
-                handleEmployerChange(index, "employer_name", e.target.value)
-              }
-              required
-            />
-            <TextInput
-              label="Position Held"
-              value={employer.position_held}
-              onChange={(e) =>
-                handleEmployerChange(index, "position_held", e.target.value)
-              }
-              required
-            />
-          </div>
-
-          <div className="grid-two-columns mb-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                From
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <SelectInput
-                  value={employer.from_month}
-                  onChange={(e) =>
-                    handleEmployerChange(index, "from_month", e.target.value)
-                  }
-                  options={monthOptions}
-                />
-                <SelectInput
-                  value={employer.from_year}
-                  onChange={(e) =>
-                    handleEmployerChange(index, "from_year", e.target.value)
-                  }
-                  options={yearOptions}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                To
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <SelectInput
-                  value={employer.to_month}
-                  onChange={(e) =>
-                    handleEmployerChange(index, "to_month", e.target.value)
-                  }
-                  options={monthOptions}
-                />
-                <SelectInput
-                  value={employer.to_year}
-                  onChange={(e) =>
-                    handleEmployerChange(index, "to_year", e.target.value)
-                  }
-                  options={yearOptions}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="grid-two-columns gap-4 mb-4">
-            <TextInput
-              label="Reason for Leaving"
-              value={employer.reason_for_leaving}
-              onChange={(e) =>
-                handleEmployerChange(index, "reason_for_leaving", e.target.value)
-              }
-              required
-            />
-            <TextInput
-              label="Contact Person"
-              value={employer.contact_person}
-              onChange={(e) =>
-                handleEmployerChange(index, "contact_person", e.target.value)
-              }
-              required
-            />
-          </div>
-
-          <TextInput
-            label="Contact Number"
-            value={employer.contact_number}
-            onChange={(e) =>
-              handleEmployerChange(index, "contact_number", e.target.value)
-            }
-            type="tel"
-            required
-          />
-        </div>
-      ))}
-
-      {showAddEmployer ? (
-        <div className="flex flex-wrap gap-3 mt-4">
+        ) : (
           <button
             type="button"
-            onClick={handleAddEmployer}
-            className="btn btn-primary"
+            onClick={() => setShowAddEmployer(true)}
+            className="mt-4 btn btn-outline"
           >
-            + Confirm Add Employer
+            + Add Employment Record
           </button>
-          <button
-            type="button"
-            onClick={() => setShowAddEmployer(false)}
-            className="btn btn-secondary"
-          >
-            Cancel
-          </button>
-        </div>
-      ) : (
-        <button
-          type="button"
-          onClick={() => setShowAddEmployer(true)}
-          className="mt-4 btn btn-outline"
-        >
-          + Add Employment Record
-        </button>
-      )}
+        )}
+      </div>
 
       <div className="section-note mt-6">
         <p className="text-sm text-blue-800">
-          <span className="font-bold">Note:</span> Include senior and strategic roles with verifiable contact persons.
+          <span className="font-bold">Note:</span> Include senior and strategic roles with verifiable contact persons. All employment information will be verified.
         </p>
       </div>
     </div>

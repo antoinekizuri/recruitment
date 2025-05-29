@@ -13,6 +13,7 @@ import SectionI from "../../../../sections/Senior/SectionI/SectionI";
 import ProgressIndicator from "../ProgressIndicator/ProgressIndicator";
 import './FormContainer.css';
 import Loader from "../../Loader";
+import { validateSectionB, validateSectionC, validateSectionD, validateSectionE, validateSectionF, validateSectionG, validateSectionI } from "../../../../utils/seniorValidators";
 
 export default function FormContainer() {
     const [currentSection, setCurrentSection] = useState(0);
@@ -42,6 +43,10 @@ export default function FormContainer() {
         is_south_african: true,
         nationality: "",
         work_permit_number: "",
+        has_political_membership: false,
+        political_party: "",
+        political_party_position: "",
+        political_party_expiry_date: "",
         has_professional_membership: false,
         professional_body: "",
         membership_number: "",
@@ -50,18 +55,11 @@ export default function FormContainer() {
         // Section C - Contact Details
         preferred_language: "",
         cell_phone: "",
-        alternative_number: "",
         email: "",
         residential_address: "",
         postal_address: "",
 
-        // Section D - Driver's License
-        license_codes: "",
-        license_expiry_date: "",
-        has_pdp: false,
-        pdp_expiry_date: "",
-
-        // Section E - Qualifications
+        // Section D - Qualifications
         highest_school_qualification: "",
         school_name: "",
         school_completion_year: "",
@@ -70,7 +68,7 @@ export default function FormContainer() {
         nqf_level: "",
         qualification_year: "",
 
-        // Section F - Work Experience
+        // Section E - Work Experience
         is_currently_employed: false,
         current_employer: "",
         employment_period: "",
@@ -81,24 +79,24 @@ export default function FormContainer() {
         previous_local_govt_condition: false,
         previous_municipality: "",
 
-        // Section G - Disciplinary Record
-        dismissed_for_misconduct: false,
+        // Section F - Disciplinary Record
+        has_criminal_or_disciplinary_record: false,
         misconduct_municipality: "",
         misconduct_type: "",
         misconduct_date: "",
         misconduct_sanction: "",
         resigned_pending_disciplinary: false,
-
-        // Section H - Criminal Record
+        criminal_or_disciplinary_details: "",
+        // Section G - Criminal Record
         has_criminal_record: false,
         criminal_act_type: "",
         criminal_case_date: "",
         criminal_outcome: "",
 
-        // Section I - References
+        // Section H - References
         references: [{ name: "", relationship: "", telephone: "", cell_phone: "", email: "" }],
 
-        // Section J - Declaration
+        // Section I - Declaration
         declaration_accepted: false
     });
 
@@ -277,29 +275,22 @@ export default function FormContainer() {
                 break;
 
             case 'section-b':
-                if (!formData.surname.trim()) errors.surname = 'Surname is required';
-                if (!formData.first_names.trim()) errors.first_names = 'First names are required';
-                if (!formData.id_number.trim()) errors.id_number = 'ID number is required';
-                if (!formData.race) errors.race = 'Race is required';
-                if (!formData.gender) errors.gender = 'Gender is required';
-                if (!formData.is_south_african && !formData.nationality.trim()) {
-                    errors.nationality = 'Nationality is required for non-South African citizens';
+                 const sectionBValidation = validateSectionB(formData);
+                if (!sectionBValidation.isValid) {
+                    Object.assign(errors, sectionBValidation.errors);
                 }
                 break;
-
+                
             case 'section-c':
-                if (!formData.preferred_language) errors.preferred_language = 'Preferred language is required';
-                if (!formData.cell_phone.trim()) errors.cell_phone = 'Cell phone is required';
-                if (!formData.email.trim()) errors.email = 'Email is required';
-                if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-                    errors.email = 'Please enter a valid email address';
+                const sectionCValidation = validateSectionC(formData);
+                if (!sectionCValidation.isValid) {
+                    Object.assign(errors, sectionCValidation.errors);
                 }
-                if (!formData.residential_address.trim()) errors.residential_address = 'Residential address is required';
                 break;
-
             case 'section-d':
-                if (formData.license_codes && !formData.license_expiry_date) {
-                    errors.license_expiry_date = 'License expiry date is required when license codes are provided';
+                const sectionDValidation = validateSectionD(formData);
+                if (!sectionDValidation.isValid) {
+                    Object.assign(errors, sectionDValidation.errors);
                 }
                 break;
 
@@ -325,13 +316,6 @@ export default function FormContainer() {
                 break;
 
             case 'section-h':
-                const sectionHValidation = validateSectionH(formData);
-                if (!sectionHValidation.isValid) {
-                    Object.assign(errors, sectionHValidation.errors);
-                }
-                break;
-
-            case 'section-i':
                 if (!formData.references || formData.references.length === 0) {
                     errors.references = 'At least one reference is required';
                 } else {
@@ -345,10 +329,10 @@ export default function FormContainer() {
                 }
                 break;
 
-            case 'section-j':
-                const sectionJValidation = validateSectionJ(formData);
-                if (!sectionJValidation.isValid) {
-                    Object.assign(errors, sectionJValidation.errors);
+            case 'section-i':
+                const sectionIValidation = validateSectionI(formData);
+                if (!sectionIValidation.isValid) {
+                    Object.assign(errors, sectionIValidation.errors);
                 }
                 break;
 
@@ -446,7 +430,7 @@ export default function FormContainer() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    formType: 'standard',
+                    formType: 'senior_management',
                     formData: transformedData
                 })
             });

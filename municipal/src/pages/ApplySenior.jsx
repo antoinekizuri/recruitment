@@ -191,100 +191,13 @@ const ApplySenior = () => {
 
   return (
     <div className="apply-normal-page">
-      {/* <FormHeader 
-        title="Application Form" 
-        subtitle="Please complete all sections of the application"
-      />
 
-      <ProgressIndicator percentage={progressPercentage} /> */}
 
       <div className="form-main-container">
-        {/* <FormStepper 
-          sections={sections.map((section, index) => ({
-            id: section.id,
-            title: getSectionTitle(section.id),
-            isCompleted: isSectionValid(section.id),
-            isCurrent: index === currentStep
-          }))}
-          currentStep={currentStep}
-          onStepClick={jumpToSection}
-        /> */}
-
-        <FormContainer
-          title={getSectionTitle(currentSectionId)}
-          description={getSectionDescription(currentSectionId)}
-        >
-          <CurrentSection
-            data={formData[currentSectionId] || {}}
-            onChange={(data) => handleChange(currentSectionId, data)}
-            errors={formErrors[currentSectionId] || {}}
-          />
-
-          <div className="form-navigation">
-            <button 
-              className="btn-previous"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-            >
-              Previous
-            </button>
-
-            {currentStep < sections.length - 1 ? (
-              <button 
-                className="btn-next"
-                onClick={handleNext}
-              >
-                Next
-              </button>
-            ) : (
-              <button 
-                className="btn-submit"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit Application'}
-              </button>
-            )}
-          </div>
-
-          {Object.keys(formErrors[currentSectionId] || {}).length > 0 && (
-            <div className="form-errors-summary">
-              <h4>Please fix the following errors:</h4>
-              <ul>
-                {Object.entries(formErrors[currentSectionId] || {}).map(([field, error]) => (
-                  <li key={field}>{error}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </FormContainer>
+        <FormContainer />
       </div>
 
-      {showConfirmation && (
-        <div className="confirmation-modal">
-          <div className="confirmation-content">
-            <h2>Ready to Submit Your Application?</h2>
-            <p>Please review all your information before final submission. Once submitted, you cannot make changes.</p>
-
-            <div className="confirmation-actions">
-              <button 
-                className="btn-cancel" 
-                onClick={() => setShowConfirmation(false)}
-              >
-                Review Again
-              </button>
-              <button 
-                className="btn-confirm"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Submitting...' : 'Confirm Submission'}
-              </button>
-            </div>
-          </div>
-        </div>
-       )}
-     </div>
+    </div>
   );
 };
 
