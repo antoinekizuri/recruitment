@@ -61,7 +61,6 @@ export const createInitialFormState = () => {
       department: '',
       division: '',
       reference_number: '',
-      municipality_entity: '',
       advertisements: [] // If applicable
     },
     

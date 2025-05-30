@@ -92,7 +92,7 @@ export default function SectionI({ formData, handleChange }) {
             {/* REFERENCES SECTION */}
             <div className="mb-12">
                 <h3 className="subsection-heading">Professional References</h3>
-                
+
                 <p className="mb-6 text-sm text-gray-700 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
                     Please provide at least three professional references who can attest to your work performance and character.
                     It is preferable to include current or previous supervisors or managers.
@@ -198,14 +198,18 @@ export default function SectionI({ formData, handleChange }) {
             {/* SUPPORTING DOCUMENTS SECTION */}
             <div className="border-t border-gray-200 pt-8">
                 <h3 className="subsection-heading">Supporting Documents</h3>
-                
+
                 <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-400 rounded-lg">
                     <p className="text-sm text-green-800">
                         <span className="font-bold">Required Documents:</span> Please upload certified copies of all relevant documents.
                         Accepted formats: PDF, JPG, JPEG, PNG (Max size: 5MB per file)
                     </p>
                 </div>
-
+                {errors.supporting_documents && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                    <p className="text-sm text-red-600">{errors.supporting_documents}</p>
+                    </div>
+                )}
                 {(formData.supporting_documents || []).map((doc, index) => (
                     <div key={index} className="qualification-box mb-6">
                         <div className="flex justify-between items-center mb-4">
@@ -214,6 +218,8 @@ export default function SectionI({ formData, handleChange }) {
                                 type="button"
                                 onClick={() => handleRemoveDocument(index)}
                                 className="btn btn-danger"
+                                // Prevent removing if it's the last document (optional - for better UX)
+                                disabled={formData.supporting_documents?.length === 1}
                             >
                                 Remove
                             </button>
@@ -228,7 +234,8 @@ export default function SectionI({ formData, handleChange }) {
                                     <select
                                         value={doc.document_type}
                                         onChange={(e) => handleDocumentChange(index, "document_type", e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors[`document_${index}_type`] ? 'border-red-300' : 'border-gray-300'
+                                            }`}
                                         required
                                     >
                                         <option value="">Select Document Type</option>
@@ -236,6 +243,9 @@ export default function SectionI({ formData, handleChange }) {
                                             <option key={type} value={type}>{type}</option>
                                         ))}
                                     </select>
+                                    {errors[`document_${index}_type`] && (
+                                        <p className="mt-1 text-sm text-red-600">{errors[`document_${index}_type`]}</p>
+                                    )}
                                 </div>
 
                                 <TextInput
@@ -256,10 +266,14 @@ export default function SectionI({ formData, handleChange }) {
                                         type="file"
                                         accept=".pdf,.jpg,.jpeg,.png"
                                         onChange={(e) => handleDocumentChange(index, "file", e.target.files[0])}
-                                        className="w-full px-3 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 focus:border-blue-500 focus:outline-none transition-colors duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        className={`w-full px-3 py-2 border-2 border-dashed rounded-lg hover:border-blue-400 focus:border-blue-500 focus:outline-none transition-colors duration-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 ${errors[`document_${index}_file`] ? 'border-red-300' : 'border-gray-300'
+                                            }`}
                                         required
                                     />
                                 </div>
+                                {errors[`document_${index}_file`] && (
+                                    <p className="mt-1 text-sm text-red-600">{errors[`document_${index}_file`]}</p>
+                                )}
                                 {doc.file && (
                                     <div className="mt-3 p-3 bg-gray-50 rounded-lg border">
                                         <div className="flex items-center justify-between">
@@ -282,6 +296,7 @@ export default function SectionI({ formData, handleChange }) {
                     </div>
                 ))}
 
+                {/* Update the add document section */}
                 {showAddDocument ? (
                     <div className="flex items-center gap-4 mt-6">
                         <button
@@ -305,7 +320,7 @@ export default function SectionI({ formData, handleChange }) {
                         onClick={() => setShowAddDocument(true)}
                         className="btn btn-outline mt-6"
                     >
-                        + Add Document
+                        + Add {(formData.supporting_documents || []).length === 0 ? 'Required Document' : 'Another Document'}
                     </button>
                 )}
 
@@ -324,8 +339,8 @@ export default function SectionI({ formData, handleChange }) {
 
             <div className="section-note mt-8">
                 <p className="text-sm text-blue-800">
-                    <span className="font-bold">Important:</span> Please ensure all references have consented to be contacted and all documents are certified copies. 
-                    The City of Polokwane reserves the right to verify all information provided. Falsified information may result in disqualification 
+                    <span className="font-bold">Important:</span> Please ensure all references have consented to be contacted and all documents are certified copies.
+                    The City of Polokwane reserves the right to verify all information provided. Falsified information may result in disqualification
                     from the recruitment process or termination of employment if discovered after appointment.
                 </p>
             </div>

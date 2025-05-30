@@ -330,35 +330,43 @@ export const validateSectionI = (sectionData) => {
       errors[`reference_${i}_email`] = 'Please provide a valid email address';
     }
   }
-  // Validate supporting documents if any are provided
-    if (sectionData.supporting_documents && sectionData.supporting_documents.length > 0) {
-        sectionData.supporting_documents.forEach((doc, index) => {
-            if (!isNotEmpty(doc.document_type)) {
-                errors[`document_${index}_type`] = 'Please select a document type';
-            }
-            
-            if (!doc.file) {
-                errors[`document_${index}_file`] = 'Please upload a document file';
-            } else {
-                // Validate file size (5MB limit)
-                if (doc.file.size > 5 * 1024 * 1024) {
-                    errors[`document_${index}_file`] = 'File size must be less than 5MB';
-                }
-                
-                // Validate file type
-                const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
-                if (!allowedTypes.includes(doc.file.type)) {
-                    errors[`document_${index}_file`] = 'Please upload PDF, JPG, or PNG files only';
-                }
-            }
-        });
+
+  // Supporting documents are required - at least one document must be uploaded
+  if (!sectionData.supporting_documents || sectionData.supporting_documents.length === 0) {
+    errors.supporting_documents = 'Please upload at least one supporting document';
+    return {
+      isValid: false,
+      errors
+    };
+  }
+
+  // Validate all supporting documents
+  sectionData.supporting_documents.forEach((doc, index) => {
+    if (!isNotEmpty(doc.document_type)) {
+      errors[`document_${index}_type`] = 'Please select a document type';
     }
+    
+    if (!doc.file) {
+      errors[`document_${index}_file`] = 'Please upload a document file';
+    } else {
+      // Validate file size (5MB limit)
+      if (doc.file.size > 5 * 1024 * 1024) {
+        errors[`document_${index}_file`] = 'File size must be less than 5MB';
+      }
+      
+      // Validate file type
+      const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(doc.file.type)) {
+        errors[`document_${index}_file`] = 'Please upload PDF, JPG, or PNG files only';
+      }
+    }
+  });
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors
   };
 };
-
 /**
  * Validates Section J (Declaration)
  * @param {Object} sectionData - Section data

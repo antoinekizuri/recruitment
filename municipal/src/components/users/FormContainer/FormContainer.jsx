@@ -14,7 +14,7 @@ import SectionI from "../../../sections/SectionI/SectionI";
 import SectionJ from "../../../sections/SectionJ/SectionJ";
 import ProgressIndicator from "../ProgressIndicator/ProgressIndicator";
 import './FormContainer.css';
-import { validateSectionE, validateSectionF, validateSectionG, validateSectionH, validateSectionJ } from "../../../utils/validators";
+import { validateSectionE, validateSectionF, validateSectionG, validateSectionH,validateSectionI, validateSectionJ } from "../../../utils/validators";
 import Loader from "../Loader";
 
 export default function FormContainer() {
@@ -341,16 +341,9 @@ export default function FormContainer() {
                 break;
 
             case 'section-i':
-                if (!formData.references || formData.references.length === 0) {
-                    errors.references = 'At least one reference is required';
-                } else {
-                    formData.references.forEach((ref, index) => {
-                        if (!ref.name.trim()) errors[`reference_${index}_name`] = `Reference ${index + 1} name is required`;
-                        if (!ref.relationship.trim()) errors[`reference_${index}_relationship`] = `Reference ${index + 1} relationship is required`;
-                        if (!ref.telephone.trim() && !ref.cell_phone.trim()) {
-                            errors[`reference_${index}_contact`] = `Reference ${index + 1} must have either telephone or cell phone`;
-                        }
-                    });
+                const sectionIValidation = validateSectionI(formData);
+                if (!sectionIValidation.isValid) {
+                    Object.assign(errors, sectionIValidation.errors);
                 }
                 break;
 

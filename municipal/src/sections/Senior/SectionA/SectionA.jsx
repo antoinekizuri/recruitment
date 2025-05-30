@@ -1,5 +1,5 @@
 import React , { useEffect, useState } from "react";
-import TextInput from "../../../components/users/TextInput/TextInput";
+import TextInput from "../../../components/users/SeniorForm/TextInput/TextInput";
 import "./SectionA.css";
 import SelectInput from "../../../components/users/SeniorForm/SelectInput/SelectInput";
 import Loader from "../../../components/users/Loader";
@@ -42,7 +42,6 @@ export default function SectionASenior({ formData, handleChange, isJobPrepopulat
           onChange={handleChange}
           required
           tooltip="Enter the job title exactly as advertised"
-
         />
 
         <TextInput
@@ -52,7 +51,6 @@ export default function SectionASenior({ formData, handleChange, isJobPrepopulat
           onChange={handleChange}
           required
           tooltip="Enter the official reference number of the advertised post"
-
         />
 
         <SelectInput
