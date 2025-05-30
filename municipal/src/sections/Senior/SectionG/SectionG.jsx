@@ -18,8 +18,8 @@ export default function SectionG_Senior({ formData, handleChange }) {
       <div className="mb-6">
         <RadioGroup
           label="Have you ever been convicted of a criminal offence, been dismissed, or faced disciplinary action in any employment?"
-          name="has_criminal_or_disciplinary_record"
-          value={formData.has_criminal_or_disciplinary_record}
+          name="has_criminalG_or_disciplinary_record"
+          value={formData.has_criminalG_or_disciplinary_record}
           onChange={handleChange}
           options={yesNoOptions}
           required

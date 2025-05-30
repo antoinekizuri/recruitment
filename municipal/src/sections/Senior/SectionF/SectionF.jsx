@@ -19,8 +19,8 @@ export default function SectionFSenior({ formData, handleChange }) {
       <div className="mb-6">
         <RadioGroup
           label="Have you been dismissed for misconduct on or after 5 July 2011?"
-          name="has_criminal_or_disciplinary_record"
-          value={formData.has_criminal_or_disciplinary_record}
+          name="has_criminalF_or_disciplinary_record"
+          value={formData.has_criminalF_or_disciplinary_record}
           onChange={handleChange}
           options={yesNoOptions}
           required
@@ -29,7 +29,7 @@ export default function SectionFSenior({ formData, handleChange }) {
       </div>
 
       {/* Details if Yes */}
-      {formData.has_criminal_or_disciplinary_record === "yes" && (
+      {formData.has_criminalF_or_disciplinary_record === "yes" && (
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">
             Please provide full details of any convictions, disciplinary actions, or dismissals:

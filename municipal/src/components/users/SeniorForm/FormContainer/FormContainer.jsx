@@ -202,6 +202,8 @@ export default function FormContainer() {
                 email: formData.email || '',
                 residential_address: formData.residential_address || '',
                 postal_address: formData.postal_address || '',
+                postal_code: formData.postal_code || '', // ADDED: Missing postal code
+
             },
 
             sectionD: {
@@ -211,13 +213,16 @@ export default function FormContainer() {
                 tertiary_qualification_year: formData.senior_year_obtained || '',
             },
             sectionE: {
+                // Current employment status
                 is_currently_employed: formData.is_currently_employed === 'yes' ? 'Yes' : 'No',
                 current_employer: formData.current_employer_name || '',
-                current_employer_address: formData.current_employer_address || '',
                 employment_period: formData.current_employment_period || '',
                 current_designation: formData.current_designation || '',
                 current_pay_number: formData.pay_number || '',
-                reasons_for_leaving: formData.reason_for_leaving || '',
+
+                // Re-employment restriction fields
+                has_reemployment_restriction: formData.has_reemployment_restriction === 'yes' ? 'Yes' : 'No',
+                previous_municipality: formData.previous_municipality_name || '',
 
                 // Transform senior_employment_history array data
                 previous_employer_1: formData.senior_employment_history?.map(emp => emp.employer_name).filter(Boolean).join('; ') || '',
@@ -239,14 +244,10 @@ export default function FormContainer() {
                 // Contact information for employment history
                 contact_persons: formData.senior_employment_history?.map(emp => emp.contact_person).filter(Boolean).join('; ') || '',
                 contact_numbers: formData.senior_employment_history?.map(emp => emp.contact_number).filter(Boolean).join('; ') || '',
-
-                // Re-employment restriction fields
-                has_reemployment_restriction: formData.has_reemployment_restriction === 'yes' ? 'Yes' : 'No',
-                previous_municipality: formData.previous_municipality_name || '',
             },
 
             sectionF: {
-                dismissed_for_misconduct: formData.has_criminal_or_disciplinary_record === 'yes' ? 'Yes' : 'No',
+                dismissed_for_misconduct: formData.has_criminalF_or_disciplinary_record === 'yes' ? 'Yes' : 'No',
                 misconduct_institution: formData.criminal_or_disciplinary_details || '',
                 misconduct_type: formData.misconduct_type || '',
                 misconduct_date: formData.misconduct_date || '',
@@ -256,7 +257,7 @@ export default function FormContainer() {
             },
 
             sectionG: {
-                has_criminal_or_disciplinary_record: formData.has_criminal_or_disciplinary_record === 'yes' ? 'Yes' : 'No',
+                has_criminal_or_disciplinary_record: formData.has_criminalG_or_disciplinary_record === 'yes' ? 'Yes' : 'No',
                 has_criminal_record: formData.has_criminal_record === 'yes' ? 'Yes' : 'No',
                 criminal_act_type: formData.criminal_act_type || '',
                 criminal_case_date: formData.criminal_case_date || '',
@@ -264,20 +265,17 @@ export default function FormContainer() {
             },
 
             sectionH: {
-                references: formData.references?.map(ref => ({
-                    name: ref.name || '',
-                    relationship: ref.relationship || '',
-                    office_phone: ref.office_phone || '',
-                    cell_phone: ref.cell_phone || '',
-                    email: ref.email || ''
-                })) || []
+                referee_name: formData.references?.map(ref => ref.name).filter(Boolean).join('; ') || '',
+                referee_relationship: formData.references?.map(ref => ref.relationship).filter(Boolean).join('; ') || '',
+                referee_office_phone: formData.references?.map(ref => ref.office_phone).filter(Boolean).join('; ') || '',
+                referee_cell_phone: formData.references?.map(ref => ref.cell_phone).filter(Boolean).join('; ') || '',
+                referee_email: formData.references?.map(ref => ref.email).filter(Boolean).join('; ') || '',
             },
 
             sectionI: {
-                declaration_agreed: formData.declaration_accepted || agreedToTerms || false,
-                declaration_date: formData.declaration_date || new Date().toISOString().split('T')[0],
-                electronic_signature: formData.electronic_signature || '',
-                agreement_timestamp: new Date().toISOString()
+                declaration_agreed: formData.declaration_accepted ? 'Yes' : 'No',
+                declaration_date: new Date().toISOString().split('T')[0],
+                electronic_signature: `${formData.first_names} ${formData.surname}`
             },
         };
     };
@@ -341,7 +339,7 @@ export default function FormContainer() {
                     formData.references.forEach((ref, index) => {
                         if (!ref.name.trim()) errors[`reference_${index}_name`] = `Reference ${index + 1} name is required`;
                         if (!ref.relationship.trim()) errors[`reference_${index}_relationship`] = `Reference ${index + 1} relationship is required`;
-                        if (!ref.telephone.trim() && !ref.cell_phone.trim()) {
+                        if (!ref.office_phone.trim() && !ref.cell_phone.trim()) {
                             errors[`reference_${index}_contact`] = `Reference ${index + 1} must have either telephone or cell phone`;
                         }
                     });
