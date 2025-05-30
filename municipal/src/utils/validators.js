@@ -300,8 +300,8 @@ export const validateSectionI = (sectionData) => {
   const errors = {};
   
   // At least three references are required
-  if (!sectionData.references || sectionData.references.length < 3) {
-    errors.references = 'Please provide at least three references';
+  if (!sectionData.references || sectionData.references.length < 2) {
+    errors.references = 'Please provide at least Two references';
     return {
       isValid: false,
       errors
@@ -309,7 +309,7 @@ export const validateSectionI = (sectionData) => {
   }
   
   // Validate first three references (required fields)
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     const reference = sectionData.references[i];
     
     if (!isNotEmpty(reference.name)) {
